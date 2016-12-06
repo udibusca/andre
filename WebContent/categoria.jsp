@@ -14,7 +14,6 @@
     <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
     <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
     
-    <script src="javascripts/libs/jquery.mask.js" type="text/javascript"></script>
   </head>
   <body>
     <div class="ls-topbar ">
@@ -101,8 +100,8 @@
 	  <thead>
 	    <tr>
 	      <th>Descrição</th>
-	      <th>Tipo</th>
 	      <th>Dta Cadastro</th>
+	      <th></th>
 	      <th></th>
 	    </tr>
 	  </thead>
@@ -137,14 +136,8 @@
 				   <b class="ls-label-text">Nome da Categoria</b>
 				   <input type="text" name="nome" placeholder="Descrição da despesa" class="ls-field" required>
 			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-			      <b class="ls-label-text">Selecione o tipo da categoria:</b>
-			      <label class="ls-label-text ls-color-success"><input type="radio" name="tipoCategoria" value="1" > Receita</label><br>
-			      <label class="ls-label-text ls-color-danger"><input type="radio" name="tipoCategoria" value="2"> Despesa</label><br>
-			      <label class="ls-label-text ls-color-success"><input type="radio" name="tipoCategoria" value="3"> Outras Entradas</label><br>
-			      <label class="ls-label-text ls-color-danger"><input type="radio" name="tipoCategoria" value="4"> Outras Saidas</label>
-			    </label>
-			  </fieldset>		      
+			  </fieldset>
+			  <input type="hidden" name="ativo" id="ativo" value="1"> <!-- Passa o usuario sempre ativo no cadastro -->
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
 		      <button type="submit" class="ls-btn-primary">Salvar</button>
@@ -167,21 +160,18 @@
 		    <div class="ls-modal-body">
 			  <fieldset>
 			    <label class="ls-label col-md-4 col-xs-12">
+				   <b class="ls-label-text">Código</b>
+				   <input type="text" name="idcategoria" id="idcategoria" class="ls-field" readonly="readonly">
+			    </label>			  
+			    <label class="ls-label col-md-4 col-xs-12">
 				   <b class="ls-label-text">Nome da Categoria</b>
 				   <input type="text" id="nome" name="nome" placeholder="Descrição da despesa" class="ls-field" required>
 			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-			      <b class="ls-label-text">Selecione o tipo da categoria:</b>
-			      <label class="ls-label-text ls-color-success"><input type="radio" id="tipoCategoria" name="tipoCategoria" value="1" > Receita</label><br>
-			      <label class="ls-label-text ls-color-danger"><input type="radio"  id="tipoCategoria" name="tipoCategoria" value="2"> Despesa</label><br>
-			      <label class="ls-label-text ls-color-success"><input type="radio" id="tipoCategoria" name="tipoCategoria" value="3"> Outras Entradas</label><br>
-			      <label class="ls-label-text ls-color-danger"><input type="radio" id="tipoCategoria" name="tipoCategoria" value="4"> Outras Saidas</label>
-			    </label>
-			  </fieldset>		      
+			  </fieldset>
+              <input type="hidden" name="ativo" id="ativo" value="1">
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
 		      <button type="submit" class="ls-btn-primary">Salvar</button>
-		      <button type="reset" name="limpar" class="ls-btn">Limpar</button>
 		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
 		    </div>
 		  </div>
@@ -211,26 +201,13 @@
 		success: function(data){
 			//data = JSON.parse(data);
 			for(i in data){
-				console.log(data[i]);
-				if (data[i].tipoCategoria == 1){
-					data[i].tipoCategoria = "<label class='ls-color-success'>Receita</label>";
-				}
-				if (data[i].tipoCategoria == 2){
-					data[i].tipoCategoria = "<label class='ls-color-danger'>Despesa</label>";
-				}
-				if (data[i].tipoCategoria == 3){
-					data[i].tipoCategoria = "<label class='ls-color-success'>Outras Entradas</label>";
-				}
-				if (data[i].tipoCategoria == 4){
-					data[i].tipoCategoria = "<label class='ls-color-danger'>Outras Saidas</label>";
-				}
 				var id = data[i].idcategoria;
 				var newRow = $("<tr>");
 			    var cols = "";
 
 			    cols += '<td>'+data[i].nome+'</td>';
-			    cols += '<td>'+data[i].tipoCategoria+'</td>';
 			    cols += '<td>'+data[i].dtaCadastro+'</td>';
+			    cols += '<td></td>';
 			    cols += '<td>';
 			    cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';
 			    cols += '<a href="#" onclick="apagarRegistro('+id+')" class="ls-btn-primary-danger ls-btn-sm">Excluir</a>';
@@ -281,18 +258,18 @@
 	        type:'GET',
 	        success:function(data){ 
 	        		for(i in data){
-	        			var id = data[i].idcategoria;
-	        			$("#nome").val(data[0].nome)
-	        			$("#tipoCategoria").val(data[0].tipoCategoria)
+	        			$("#idcategoria").val(data[i].idcategoria)
+	        			$("#nome").val(data[i].nome)
+	        			$("#ativo").val(data[i].ativo) 
 	        			console.log(data);	
 	        		}
-	        	locastyle.modal.open("#modalEdita");
 	        }
     	});
+    	locastyle.modal.open("#modalEdita");
       }
     // função atualizar
 	$("#ccategoriaedita").submit(function(e) {
-	    var url = "http://localhost:8080/app/categoria?metodo=cadastrar";
+	    var url = "http://localhost:8080/app/categoria?metodo=atualiza";
 	    $.ajax({
 				type: "GET",
 				url: url,

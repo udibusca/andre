@@ -1,8 +1,6 @@
 package br.com.gfinanceiro.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,7 +23,6 @@ public class UsuarioController extends HttpServlet {
 		UsuarioDao dao = new UsuarioDao();
 
 		if (request.getParameter("metodo") != null) {
-			List<Usuario> lstUsuario = new ArrayList<Usuario>();
 			String acao = (String) request.getParameter("metodo");
 			Gson gson = new Gson();
 			response.setContentType("application/json");
@@ -38,13 +35,61 @@ public class UsuarioController extends HttpServlet {
 					response.getWriter().print(error);
 					ex.printStackTrace();
 				}
-			} else if (acao.equals("cadastrar") || acao.equals("editar")) {
+			} else if (acao.equals("cadastrar")) {
 				Usuario usuario = new Usuario();
-				if(acao.equals("editar")){
+
+				if (request.getParameter("nome") != null) {
+					String nome = (String) request.getParameter("nome");
+					usuario.setNome(nome);
+				}
+				if (request.getParameter("email") != null) {
+					String email = (String) request.getParameter("email");
+					usuario.setEmail(email);
+				}
+				if (request.getParameter("usuario") != null) {
+					String usr = (String) request.getParameter("usuario");
+					usuario.setUsuario(usr);
+				}
+				if (request.getParameter("senha") != null) {
+					String senha = (String) request.getParameter("senha");
+					usuario.setSenha(senha);
+				}
+				if (request.getParameter("ativo") != null) {
+					String ativo = request.getParameter("ativo");
+					usuario.setAtivo(Integer.parseInt(ativo));
+				}
+				try {
+					dao.addUsuario(usuario);
+					String json = gson.toJson(usuario);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
+
+				} catch (Exception ex) {
+					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
+					response.getWriter().print(error);
+				}
+			} else if (acao.equals("excluir")) {
+				try {
 					if (request.getParameter("idusuario") != null) {
-						int idusuario = Integer.parseInt(request.getParameter("idusuario"));
-						response.getWriter().append(dao.getUsuarioPorId(idusuario));
+						String idusuario = (String) request.getParameter("idusuario");
+						dao.deleteUsuario(Integer.parseInt(idusuario));
+						String listData = "{\"Result\":\"OK\"}";
+						response.getWriter().print(listData);
 					}
+				} catch (Exception ex) {
+					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
+					response.getWriter().print(error);
+				}
+			} else if (acao.equals("editar")) {
+				if (request.getParameter("idusuario") != null) {
+					int idusuario = Integer.parseInt(request.getParameter("idusuario"));
+					response.getWriter().append(dao.getUsuarioPorId(idusuario));
+				}
+			} else if (acao.equals("atualiza")) {
+				Usuario usuario = new Usuario();
+				if (request.getParameter("idusuario") != null) {
+					int idusuario = Integer.parseInt(request.getParameter("idusuario"));
+					usuario.setIdusuario(idusuario);
 				}
 				if (request.getParameter("nome") != null) {
 					String nome = (String) request.getParameter("nome");
@@ -67,32 +112,11 @@ public class UsuarioController extends HttpServlet {
 					usuario.setAtivo(Integer.parseInt(ativo));
 				}
 				try {
-					if (acao.equals("cadastrar")) {
-						
-						dao.addUsuario(usuario);
-						lstUsuario.add(usuario);
-						String json = gson.toJson(usuario);
-						String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						response.getWriter().print(listData);
-						
-					} else if (acao.equals("editar")) {
-						dao.updateUsuario(usuario);
-						//String json = gson.toJson(usuario);
-						//String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						//response.getWriter().print(listData);
-					}
-				} catch (Exception ex) {
-					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
-					response.getWriter().print(error);
-				}
-			} else if (acao.equals("excluir")) { 
-				try {
-					if (request.getParameter("idusuario") != null) {
-						String idusuario = (String) request.getParameter("idusuario");
-						dao.deleteUsuario(Integer.parseInt(idusuario));
-						String listData = "{\"Result\":\"OK\"}";
-						response.getWriter().print(listData);
-					}
+					dao.updateUsuario(usuario);
+
+					String json = gson.toJson(usuario);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);

@@ -8,14 +8,12 @@
 
 <meta charset="utf-8">
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <meta name="description" content="Sistema financeiro">
 <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css">
 <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
 <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
 
-<script src="javascripts/libs/jquery.mask.js" type="text/javascript"></script>
 </head>
 <body>
 	<div class="ls-topbar ">
@@ -104,9 +102,9 @@
 		<table class="ls-table ls-table-striped">
 			<thead>
 				<tr>
+					<th>N°Registro</th>				
 					<th>CPF</th>
 					<th>Nome</th>
-					<th>N°Registro</th>
 					<th>Dta Cadastro</th>
 					<th></th>
 				</tr>
@@ -147,7 +145,9 @@
 							placeholder="Nome completo" class="ls-field" required>
 						</label> 
 					</fieldset>
+					<input type="hidden" name="ativo" value="1"> <!-- Passa o usuario sempre ativo no cadastro -->
 				</div>
+				<input type="hidden" id="ativo" name="ativo" value="1">
 				<div class="ls-modal-footer ls-txt-right ls-actions-btn">
 					<button type="submit" class="ls-btn-primary">Salvar</button>
 					<button type="reset" class="ls-btn">Limpar</button>
@@ -156,6 +156,43 @@
 			</div>
 		</form>
 	</div>
+	
+	<!-- Modal de editar cliente -->
+	<div class="ls-modal" id="modalEdita">
+		<form id="cclienteedita" method="GET"
+			class="ls-form ls-form-horizontal row">
+			<div class="ls-modal-large">
+				<div class="ls-modal-header">
+					<button data-dismiss="modal">&times;</button>
+					<h4 class="ls-modal-title">Editar cliente</h4>
+				</div>
+				<div class="ls-modal-body">
+					<fieldset>
+					<label class="ls-label col-md-4 col-xs-12"> <b
+							class="ls-label-text">N°Registro</b>
+							<input type="text" name="idcliente" id="idcliente" class="ls-field" readonly="readonly">
+						</label>
+						<label class="ls-label col-md-4 col-xs-12"> <b
+							class="ls-label-text">CPF</b> <input type="text" name="cpf" id="cpf"
+							class="ls-mask-cpf" placeholder="000.000.000-00">
+						</label> 
+						<label class="ls-label col-md-4 col-xs-12"> <b
+							class="ls-label-text">Nome</b> <input type="text" name="nome" id="nome"
+							placeholder="Nome completo" class="ls-field" required>
+						</label> 
+					</fieldset>
+				</div>
+				<input type="hidden" id="ativo" name="ativo" value="1">
+				<div class="ls-modal-footer ls-txt-right ls-actions-btn">
+					<button type="submit" class="ls-btn-primary">Salvar</button>
+					<button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	
+	
+	
 	</main>
 
 	<aside class="ls-notification">
@@ -188,19 +225,16 @@
 										success : function(data) {
 											//data = JSON.parse(data);
 											for (i in data) {
-												console.log(data[i]);
-
-												var id = data[i].idcliente;
+												id = data[i].idcliente;
 												var newRow = $("<tr>");
 												var cols = "";
-
+												
+												cols += '<td>' + id+ '</td>';
 												cols += '<td>' + data[i].cpf+ '</td>';
 												cols += '<td>' + data[i].nome+ '</td>';
-												cols += '<td>' + id+ '</td>';
 												cols += '<td>'+ data[i].data_cadastro+ '</td>';
 												cols += '<td>';
-												cols += '<a href="#" class="ls-btn-sm">Editar</a>';
-												cols += '<a href="#" class="ls-btn-sm">Desativar</a>';
+												cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';	
 												cols += '<a href="#" onclick="apagarRegistro('+id+')" class="ls-btn-primary-danger ls-btn-sm">Excluir</a>';
 												cols += '</td>';
 
@@ -231,7 +265,7 @@
 		function apagarRegistro(id) {
 			var url = 'http://localhost:8080/app/cliente';
 			$.ajax({
-				url : url + "?metodo=excluir&idcliente=" + id,
+				url : url + "?metodo=excluir&idcliente="+id,
 				type : 'GET',
 				success : function(res) {
 					if (res != 'success') {
@@ -241,6 +275,37 @@
 				}
 			});
 		}
+        // função editar
+		function editarRegistro(id) {
+        	var url = 'http://localhost:8080/app/cliente';
+        	$.ajax ({
+        		url: url+"?metodo=editar&idcliente="+id,
+		        type:'GET',
+		        success:function(data){ 
+		        		for(i in data){
+		        			$("#idcliente").val(data[i].idcliente)
+		        			$("#cpf").val(data[i].cpf)
+		        			$("#nome").val(data[i].nome)
+		        			$("#ativo").val(data[i].ativo)
+		        		}
+		        }
+        	});
+        	locastyle.modal.open("#modalEdita");
+          }
+         // função atualizar
+    	$("#cclienteedita").submit(function(e) {
+    	    var url = 'http://localhost:8080/app/cliente?metodo=atualiza';
+    	    $.ajax({
+    				type: "GET",
+    				url: url,
+    				data: $("#cclienteedita").serialize(),
+    				success: function(data){
+    				    locastyle.modal.close();  // fecha a modal
+    		    	    location.reload();        // carrega pagina
+    				}
+    			});
+    	    e.preventDefault();
+    	});        
 	</script>
 </body>
 </html>

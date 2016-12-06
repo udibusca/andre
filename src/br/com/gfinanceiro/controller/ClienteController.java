@@ -38,14 +38,8 @@ public class ClienteController extends HttpServlet {
 					response.getWriter().print(error);
 					ex.printStackTrace();
 				}
-			} else if (acao.equals("cadastrar") || acao.equals("editar")) {
+			} else if (acao.equals("cadastrar")) {
 				Cliente cliente = new Cliente();
-				if(acao.equals("editar")){
-					if (request.getParameter("idcliente") != null) {
-						int idcliente = Integer.parseInt(request.getParameter("idcliente"));
-						response.getWriter().append(dao.getClientePorId(idcliente));
-					}
-				}
 
 				if (request.getParameter("nome") != null) {
 					String nome = (String) request.getParameter("nome");
@@ -60,25 +54,17 @@ public class ClienteController extends HttpServlet {
 					cliente.setAtivo(Integer.parseInt(ativo));
 				}
 				try {
-					if (acao.equals("cadastrar")) {
-						
-						dao.addCliente(cliente);
-						lstCliente.add(cliente);
-						String json = gson.toJson(cliente);
-						String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						response.getWriter().print(listData);
-						
-					} else if (acao.equals("editar")) {
-						dao.updateCliente(cliente);
-						//String json = gson.toJson(usuario);
-						//String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						//response.getWriter().print(listData);
-					}
+					dao.addCliente(cliente);
+					lstCliente.add(cliente);
+					String json = gson.toJson(cliente);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
+
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);
 				}
-			} else if (acao.equals("excluir")) { 
+			} else if (acao.equals("excluir")) {
 				try {
 					if (request.getParameter("idcliente") != null) {
 						String idcliente = (String) request.getParameter("idcliente");
@@ -90,8 +76,44 @@ public class ClienteController extends HttpServlet {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);
 				}
+			} else if (acao.equals("editar")){
+			
+				if (request.getParameter("idcliente") != null) {
+					int idcliente = Integer.parseInt(request.getParameter("idcliente"));
+					response.getWriter().append(dao.getClientePorId(idcliente));
+				}
+			}else if (acao.equals("atualiza")) {
+				
+				Cliente cliente = new Cliente();
+				if (request.getParameter("idcliente") != null) {
+					int idcliente = Integer.parseInt(request.getParameter("idcliente"));
+					cliente.setIdcliente(idcliente);
+					System.out.println(idcliente);
+				}
+				if (request.getParameter("nome") != null) {
+					String nome = (String) request.getParameter("nome");
+					cliente.setNome(nome);
+				}
+				if (request.getParameter("cpf") != null) {
+					String cpf = request.getParameter("cpf");
+					cliente.setCpf(cpf);
+				}
+				if (request.getParameter("ativo") != null) {
+					String ativo = request.getParameter("ativo");
+					cliente.setAtivo(Integer.parseInt(ativo));
+				}
+				try {
+					dao.updateCliente(cliente);
+					String json = gson.toJson(cliente);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
+				} catch (Exception ex) {
+					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
+					response.getWriter().print(error);
+				}
 			}
 		}
 	}
 
 }
+

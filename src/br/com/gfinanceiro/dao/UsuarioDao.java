@@ -22,13 +22,13 @@ public class UsuarioDao {
 	// Todos selects da Classe Usuario
 	public String getAllUsuario(int limit) {
 		UsuarioDao obj = new UsuarioDao();
-		String sql = "SELECT * FROM usuario ORDER BY idusuario limit " + limit;
+		String sql = "SELECT * FROM usuario where ativo = 1 ORDER BY idusuario limit " + limit;
 		return obj.getAllUsuario(sql);
 	}
-	
+
 	public String getUsuarioPorId(int idusuario) {
 		UsuarioDao obj = new UsuarioDao();
-		String sql = "select * from usuario where idusuario="+idusuario;
+		String sql = "select * from usuario where idusuario=" + idusuario;
 		return obj.getUsuarioPorId(sql);
 	}
 
@@ -50,7 +50,7 @@ public class UsuarioDao {
 
 	public void deleteUsuario(int Idusuario) {
 		try {
-			java.sql.PreparedStatement prepare = connection.prepareStatement("DELETE FROM usuario WHERE idusuario = ?");
+			java.sql.PreparedStatement prepare = connection.prepareStatement("UPDATE usuario set ativo = 0 WHERE idusuario = ?");
 			prepare.setInt(1, Idusuario);
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -62,16 +62,17 @@ public class UsuarioDao {
 		try {
 			java.sql.PreparedStatement prepare = connection.prepareStatement(
 					"UPDATE usuario SET nome = ?,email = ?, usuario = ?, senha = ?, ativo = ? WHERE idusuario = ?");
-			prepare.setInt(1, usuario.getIdusuario());
-			prepare.setString(2, usuario.getNome());
-			prepare.setString(3, usuario.getEmail());
-			prepare.setString(4, usuario.getUsuario());
-			prepare.setString(5, usuario.getSenha());
-			prepare.setInt(6, usuario.getAtivo());
+			prepare.setString(1, usuario.getNome());
+			prepare.setString(2, usuario.getEmail());
+			prepare.setString(3, usuario.getUsuario());
+			prepare.setString(4, usuario.getSenha());
+			prepare.setInt(5, usuario.getAtivo());
+			prepare.setInt(6, usuario.getIdusuario());
 			prepare.executeUpdate();
 
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
+			System.out.println(usuario);
 		}
 	}
 
@@ -112,27 +113,6 @@ public class UsuarioDao {
 		return jsonUsuarios;
 	}
 
-	/*public Usuario getUsuarioPorId(int idusuario) {
-		Usuario usuario = new Usuario();
-		try {
-			java.sql.PreparedStatement prepare = connection.prepareStatement("select * from usuario where idusuario=?");
-			prepare.setInt(1, idusuario);
-			ResultSet rs = prepare.executeQuery();
-
-			if (rs.next()) {
-				usuario.setIdusuario(rs.getInt("idusuario"));
-				usuario.setNome(rs.getString("nome"));
-				usuario.setEmail(rs.getString("email"));
-				usuario.setUsuario(rs.getString("usuario"));
-				usuario.setSenha(rs.getString("senha"));
-				usuario.setAtivo(rs.getInt("ativo"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return usuario;
-	}*/
-
 	public String getUsuarioPorId(String queryString) {
 		ArrayList<Usuario> ArrayUsuario = new ArrayList<Usuario>();
 		String jsonUsuario = "{}";
@@ -167,7 +147,6 @@ public class UsuarioDao {
 		}
 
 		return jsonUsuario;
-	}	
-	
-	
+	}
+
 }

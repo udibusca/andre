@@ -38,14 +38,8 @@ public class FornecedorController extends HttpServlet {
 					response.getWriter().print(error);
 					ex.printStackTrace();
 				}
-			} else if (acao.equals("cadastrar") || acao.equals("editar")) {
+			} else if (acao.equals("cadastrar")) {
 				Fornecedor fornecedor = new Fornecedor();
-				if(acao.equals("editar")){
-					if (request.getParameter("idfornecedor") != null) {
-						int idfornecedor = Integer.parseInt(request.getParameter("idfornecedor"));
-						response.getWriter().append(dao.getFornecedorPorId(idfornecedor));
-					}
-				}
 
 				if (request.getParameter("nome") != null) {
 					String nome = (String) request.getParameter("nome");
@@ -60,25 +54,18 @@ public class FornecedorController extends HttpServlet {
 					fornecedor.setAtivo(Integer.parseInt(ativo));
 				}
 				try {
-					if (acao.equals("cadastrar")) {
-						
-						dao.addFornecedor(fornecedor);
-						lstFornecedor.add(fornecedor);
-						String json = gson.toJson(fornecedor);
-						String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						response.getWriter().print(listData);
-						
-					} else if (acao.equals("editar")) {
-						dao.updateFornecedor(fornecedor);
-						//String json = gson.toJson(usuario);
-						//String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
-						//response.getWriter().print(listData);
-					}
+					dao.addFornecedor(fornecedor);
+
+					lstFornecedor.add(fornecedor);
+					String json = gson.toJson(fornecedor);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
+
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);
 				}
-			} else if (acao.equals("excluir")) { 
+			} else if (acao.equals("excluir")) {
 				try {
 					if (request.getParameter("idfornecedor") != null) {
 						String idfornecedor = (String) request.getParameter("idfornecedor");
@@ -86,6 +73,38 @@ public class FornecedorController extends HttpServlet {
 						String listData = "{\"Result\":\"OK\"}";
 						response.getWriter().print(listData);
 					}
+				} catch (Exception ex) {
+					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
+					response.getWriter().print(error);
+				}
+			} else if (acao.equals("editar")) {
+				if (request.getParameter("idfornecedor") != null) {
+					int idfornecedor = Integer.parseInt(request.getParameter("idfornecedor"));
+					response.getWriter().append(dao.getFornecedorPorId(idfornecedor));
+				}
+			} else if (acao.equals("atualiza")) {
+				Fornecedor fornecedor = new Fornecedor();
+				if (request.getParameter("idfornecedor") != null) {
+					int idfornecedor = Integer.parseInt(request.getParameter("idfornecedor"));
+					fornecedor.setIdfornecedor(idfornecedor);
+				}
+				if (request.getParameter("nome") != null) {
+					String nome = (String) request.getParameter("nome");
+					fornecedor.setNome(nome);
+				}
+				if (request.getParameter("cnpj") != null) {
+					String cnpj = request.getParameter("cnpj");
+					fornecedor.setCnpj(cnpj);
+				}
+				if (request.getParameter("ativo") != null) {
+					String ativo = request.getParameter("ativo");
+					fornecedor.setAtivo(Integer.parseInt(ativo));
+				}
+				try {
+					dao.updateFornecedor(fornecedor);
+					String json = gson.toJson(fornecedor);
+					String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+					response.getWriter().print(listData);
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);

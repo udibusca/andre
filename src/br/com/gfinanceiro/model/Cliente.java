@@ -1,18 +1,5 @@
 package br.com.gfinanceiro.model;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import jdk.nashorn.internal.runtime.JSONListAdapter;
-
-import java.util.Arrays;
-import java.util.Date;
-
-
 public class Cliente  {
 	private int idcliente;
 	private String nome;

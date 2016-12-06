@@ -19,7 +19,6 @@
 <link href="css/jquery-ui-1.10.3.custom.css" rel="stylesheet"
 	type="text/css" />
 
-<script src="javascripts/libs/jquery.mask.js" type="text/javascript"></script>
 <script src="javascripts/jquery-1.8.2.js" type="text/javascript"></script>
 <script src="javascripts/jquery-ui-1.10.3.custom.js"
 	type="text/javascript"></script>
@@ -182,14 +181,15 @@
 			<div class="ls-modal-large">
 				<div class="ls-modal-header">
 					<button data-dismiss="modal">&times;</button>
-					<h4 class="ls-modal-title">Editar usuário</h4>
+					<h4 class="ls-modal-title"> Editar usuário </h4>
 				</div>
 				<div class="ls-modal-body">
 					<fieldset>
-						<label class="ls-label col-md-4 col-xs-12"> <b
-							class="ls-label-text">Codigo</b> <input type="text"
-							name="idusuario" id="idusuario" class="ls-field" value="" disabled="disabled">
-						</label>					
+                         <label class="ls-label col-md-4 col-xs-12"> <b
+							class="ls-label-text">Código</b> <input type="text"
+							name="idusuario" id="idusuario" class="ls-field" readonly="readonly">
+						</label>
+						<!-- <input type="hidden" name="idusuario" id="idusuario"> -->				
 						<label class="ls-label col-md-4 col-xs-12"> <b
 							class="ls-label-text">Nome do usuário</b> <input type="text"
 							name="nome" id="nome" placeholder="Digite o seu nome"
@@ -205,12 +205,12 @@
 							name="usuario" id="usuario" placeholder="Digite seu usuário" class="ls-field"
 							required>
 						</label>
-						<input type="hidden" name="ativo" value="1"> <!-- Passa o usuario sempre ativo no cadastro -->
+						<input type="hidden" id="senha" name="senha">
+						<input type="hidden" id="ativo" name="ativo" value="1"> <!-- Passa o usuario sempre ativo no cadastro -->
 					</fieldset>
 				</div>
 				<div class="ls-modal-footer ls-txt-right ls-actions-btn">
 					<button type="submit" class="ls-btn-primary">Salvar</button>
-					<button type="reset" class="ls-btn">Limpar</button>
 					<button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
 				</div>
 			</div>
@@ -262,7 +262,7 @@
         		success: function(dados){
         			for(i in dados){
         				//console.log(dados);
-        				var id = dados[i].idusuario;
+        				id = dados[i].idusuario;
         				var newRow = $("<tr>");
         			    var cols = "";
 
@@ -305,6 +305,7 @@
 		        type:'GET',
 		        success:function(res){
 		        	if (res != 'success') {
+		        		//locastyle.modal.open("#cadastroSucesso");
 		        		alert("Registro apagado com sucesso.");
 		        		history.go(0);
 		        		}
@@ -314,25 +315,27 @@
         // função editar
 		function editarRegistro(id) {
         	var url = 'http://localhost:8080/app/usuario';
+        	//locastyle.modal.open("#modalEdita");
         	$.ajax ({
         		url: url+"?metodo=editar&idusuario="+id,
 		        type:'GET',
 		        success:function(data){ 
 		        		for(i in data){
-		        			var id = data[i].idusuario;
-		        			$("#idusuario").val(id)
+		        			$("#idusuario").val(data[i].idusuario)
 		        			$("#nome").val(data[i].nome)
 		        			$("#email").val(data[i].email)
 		        			$("#usuario").val(data[i].usuario)
-		        			//console.log(data);	
+		        			$("#senha").val(data[i].senha)
+		        			$("ativo").val(data[i].ativo)
+		        			//console.log(data);
 		        		}
-		        	locastyle.modal.open("#modalEdita");
 		        }
         	});
+        	locastyle.modal.open("#modalEdita");
           }
-        // função atualizar
+         // função atualizar
     	$("#cusuarioedita").submit(function(e) {
-    	    var url = "http://localhost:8080/app/usuario?metodo=cadastrar";
+    	    var url = "http://localhost:8080/app/usuario?metodo=atualiza";
     	    $.ajax({
     				type: "GET",
     				url: url,

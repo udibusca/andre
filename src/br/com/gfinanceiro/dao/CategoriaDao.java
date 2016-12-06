@@ -22,7 +22,7 @@ public class CategoriaDao {
 	// Todos selects da Classe categoria
 	public String getAllCategoria(int limit) {
 		CategoriaDao obj = new CategoriaDao();
-		String sql = "SELECT * FROM categoria ORDER BY idcategoria limit " + limit;
+		String sql = "SELECT * FROM categoria where ativo = 1 ORDER BY idcategoria limit " + limit;
 		return obj.getAllCategoria(sql);
 	}
 	
@@ -36,10 +36,9 @@ public class CategoriaDao {
 	public void addCategoria(Categoria categoria) {
 		try {
 			java.sql.PreparedStatement prepare = connection
-					.prepareStatement("INSERT INTO categoria (nome,tipocategoria,ativo) VALUES (?,?,?)");
+					.prepareStatement("INSERT INTO categoria (nome,ativo) VALUES (?,?)");
 			prepare.setString(1, categoria.getNome());
-			prepare.setInt(2, categoria.getTipoCategoria());
-			prepare.setInt(3, categoria.getAtivo());
+			prepare.setInt(2, categoria.getAtivo());
 			prepare.executeUpdate();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
@@ -48,7 +47,7 @@ public class CategoriaDao {
 
 	public void deleteCategoria(int idcategoria) {
 		try {
-			java.sql.PreparedStatement prepare = connection.prepareStatement("DELETE FROM categoria WHERE idcategoria = ?");
+			java.sql.PreparedStatement prepare = connection.prepareStatement("UPDATE categoria set ativo = 0 WHERE idcategoria = ?");
 			prepare.setInt(1, idcategoria);
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -59,11 +58,10 @@ public class CategoriaDao {
 	public void updateCategoria(Categoria categoria) {
 		try {
 			java.sql.PreparedStatement prepare = connection.prepareStatement(
-					"UPDATE categoria SET nome = ?, idcategoria = ?,ativo = ? WHERE idcategoria = ?");
-			prepare.setInt(1, categoria.getIdcategoria());
-			prepare.setString(2, categoria.getNome());
-			prepare.setInt(3, categoria.getTipoCategoria());
-			prepare.setInt(4, categoria.getAtivo());
+					"UPDATE categoria SET nome = ?,ativo = ? WHERE idcategoria = ?");
+			prepare.setString(1, categoria.getNome());
+			prepare.setInt(2, categoria.getAtivo());
+			prepare.setInt(3, categoria.getIdcategoria());
 			prepare.executeUpdate();
 
 		} catch (SQLException e) {
@@ -82,14 +80,12 @@ public class CategoriaDao {
 			while (rs.next()) {
 				String idcategoria = rs.getString("idcategoria");
 				String nome = rs.getString("nome");
-				String tipoCategoria = rs.getString("tipoCategoria");
 				String dtaCadastro	= rs.getString("dtaCadastro");
 				String ativo = rs.getString("ativo");
 
 				Categoria myClass = new Categoria();
 				myClass.setIdcategoria(Integer.parseInt(idcategoria));
 				myClass.setNome(nome);
-				myClass.setTipoCategoria(Integer.parseInt(tipoCategoria));
 				myClass.setDtaCadastro(dtaCadastro);
 				myClass.setAtivo(Integer.parseInt(ativo));
 				ArrayCategoria.add(myClass);
@@ -116,13 +112,11 @@ public class CategoriaDao {
 			while (rs.next()) {
 				String idcategoria = rs.getString("idcategoria");
 				String nome = rs.getString("nome");
-				String tipoCategoria = rs.getString("tipoCategoria");
 				String ativo = rs.getString("ativo");
 
 				Categoria myClass = new Categoria();
 				myClass.setIdcategoria(Integer.parseInt(idcategoria));
 				myClass.setNome(nome);
-				myClass.setTipoCategoria(Integer.parseInt(tipoCategoria));
 				myClass.setAtivo(Integer.parseInt(ativo));
 				ArrayCategoria.add(myClass);
 			}

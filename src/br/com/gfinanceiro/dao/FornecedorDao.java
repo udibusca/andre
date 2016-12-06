@@ -22,7 +22,7 @@ public class FornecedorDao {
 	// Todos selects da Classe fornecedor
 	public String getAllFornecedor(int limit) {
 		FornecedorDao obj = new FornecedorDao();
-		String sql = "SELECT * FROM fornecedor ORDER BY idfornecedor limit " + limit;
+		String sql = "SELECT * FROM fornecedor where ativo = 1 ORDER BY idfornecedor limit " + limit;
 		return obj.getAllFornecedor(sql);
 	}
 	
@@ -48,7 +48,7 @@ public class FornecedorDao {
 
 	public void deleteFornecedor(int idfornecedor) {
 		try {
-			java.sql.PreparedStatement prepare = connection.prepareStatement("DELETE FROM fornecedor WHERE idfornecedor = ?");
+			java.sql.PreparedStatement prepare = connection.prepareStatement("UPDATE fornecedor set ativo = 0  WHERE idfornecedor = ?");
 			prepare.setInt(1, idfornecedor);
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -59,11 +59,11 @@ public class FornecedorDao {
 	public void updateFornecedor(Fornecedor fornecedor) {
 		try {
 			java.sql.PreparedStatement prepare = connection.prepareStatement(
-					"UPDATE fornecedor SET nome = ?, cnjp = ?,ativo = ? WHERE idfornecedor = ?");
-			prepare.setInt(1, fornecedor.getIdfornecedor());
-			prepare.setString(2, fornecedor.getNome());
-			prepare.setString(3, fornecedor.getCnpj());
-			prepare.setInt(4, fornecedor.getAtivo());
+					"UPDATE fornecedor SET nome = ?, cnpj = ?,ativo = ? WHERE idfornecedor = ?");
+			prepare.setString(1, fornecedor.getNome());
+			prepare.setString(2, fornecedor.getCnpj());
+			prepare.setInt(3, fornecedor.getAtivo());
+			prepare.setInt(4, fornecedor.getIdfornecedor());
 			prepare.executeUpdate();
 
 		} catch (SQLException e) {

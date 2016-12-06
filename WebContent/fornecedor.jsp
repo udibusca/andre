@@ -100,9 +100,9 @@
 	<table class="ls-table ls-table-striped">
 	  <thead>
 	    <tr>
+	      <th>N°Registro</th>	    
 	      <th>CNPJ</th>
 	      <th>Nome Fantasia</th>
-	      <th>N°Registro</th>
 	      <th>Dta Cadastro</th>
 	      <th></th>
 	    </tr>
@@ -153,6 +153,42 @@
 		  </div>
 		 </form>
 		</div>
+		
+		
+		<!-- Modal de editar fornecedor -->
+		<div class="ls-modal" id="modalEdita">
+		<form  id="editarfornecedor" method="GET" class="ls-form ls-form-horizontal row">
+		  <div class="ls-modal-large">
+		    <div class="ls-modal-header">
+		      <button data-dismiss="modal">&times;</button>
+		      <h4 class="ls-modal-title">Cadastrar novo Fornecedor</h4>
+		    </div>
+		    <div class="ls-modal-body">
+			  <fieldset>
+                <label class="ls-label col-md-4 col-xs-12"> 
+                   <b class="ls-label-text">Código</b>
+                   <input type="text"name="idfornecedor" id="idfornecedor" class="ls-field" readonly="readonly">
+                </label>			  
+			    <label class="ls-label col-md-4 col-xs-12">
+				   <b class="ls-label-text">CNJP</b>
+				   <input type="text" name="cnpj" id="cnpj" class="ls-mask-cnjp" placeholder="000.000.000-00" >
+			    </label>
+			    <label class="ls-label col-md-4 col-xs-12">
+			      <b class="ls-label-text">Nome Fantasia</b>
+			      <input type="text" name="nome" id="nome" placeholder="Nome completo" class="ls-field" required>
+			    </label>  <label class="ls-label col-md-4 col-xs-12">
+			      <input type="hidden" name="ativo" id="ativo" value="1">
+			    </label>
+			  </fieldset>		      
+		    </div>
+		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
+		      <button type="submit" class="ls-btn-primary">Salvar</button>
+		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
+		    </div>
+		  </div>
+		 </form>
+		</div>		
+		
 	</main>
 
     <aside class="ls-notification"> 
@@ -180,14 +216,12 @@
         				var id = dados[i].idfornecedor;
         				var newRow = $("<tr>");
         			    var cols = "";
+        			    cols += '<td>'+dados[i].idfornecedor+'</td>';
         			    cols += '<td>'+dados[i].cnpj+'</td>';
         			    cols += '<td>'+dados[i].nome+'</td>';
-        			    cols += '<td>'+dados[i].idfornecedor+'</td>';
         			    cols += '<td>'+dados[i].data_cadastro+'</td>';
         			    cols += '<td>';
         			    cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';
-        			    //cols += '<button data-ls-module="modal" data-target="#usuario'+id+'" class="ls-btn-sm">Editar</button>'
-        			    cols += '<a href="#" class="ls-btn-sm">Desativar</a>';
         			    cols += '<a href="#" onclick="apagarRegistro('+id+')" class="ls-btn-primary-danger ls-btn-sm">Excluir</a>';
         			    cols += '</td>';
 
@@ -229,25 +263,37 @@
         	});
         }
         // função editar
-        
 		function editarRegistro(id) {
         	var url = 'http://localhost:8080/app/fornecedor';
+        	//locastyle.modal.open("#modalEdita");
         	$.ajax ({
         		url: url+"?metodo=editar&idfornecedor="+id,
 		        type:'GET',
-		        data: $("#cusuarioedita").serialize(),
 		        success:function(data){ 
-		        	if (data == 'success') {
 		        		for(i in data){
-		        			var id = data[i].idusuario;
-		        			console.log(data);
+		        			$("#idfornecedor").val(data[i].idfornecedor)
+		        			$("#nome").val(data[i].nome)
+		        			$("#cnpj").val(data[i].cnpj)
+		        			$("ativo").val(data[i].ativo)
 		        		}
-		        		//locastyle.modal.open("#modalEdita");
-		        		//alert("modal");
-		        	}
 		        }
         	});
-        }
+        	locastyle.modal.open("#modalEdita");
+          }
+         // função atualizar
+    	$("#editarfornecedor").submit(function(e) {
+    	    var url = "http://localhost:8080/app/fornecedor?metodo=atualiza";
+    	    $.ajax({
+    				type: "GET",
+    				url: url,
+    				data: $("#editarfornecedor").serialize(),
+    				success: function(data){
+    				    locastyle.modal.close();  // fecha a modal
+    		    	    location.reload();        // carrega pagina
+    				}
+    			});
+    	    e.preventDefault();
+    	});
   </script>    
   </body>
 </html>

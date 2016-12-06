@@ -22,7 +22,7 @@ public class ClienteDao {
 	// Todos selects da Classe cliente
 	public String getAllCliente(int limit) {
 		ClienteDao obj = new ClienteDao();
-		String sql = "SELECT * FROM cliente ORDER BY idcliente limit " + limit;
+		String sql = "SELECT * FROM cliente where ativo = 1 ORDER BY idcliente limit " + limit;
 		return obj.getAllCliente(sql);
 	}
 	
@@ -48,7 +48,7 @@ public class ClienteDao {
 
 	public void deleteCliente(int idcliente) {
 		try {
-			java.sql.PreparedStatement prepare = connection.prepareStatement("DELETE FROM cliente WHERE idcliente = ?");
+			java.sql.PreparedStatement prepare = connection.prepareStatement("UPDATE cliente set ativo = 0 WHERE idcliente = ?");
 			prepare.setInt(1, idcliente);
 			prepare.executeUpdate();
 		} catch (SQLException e) {
@@ -59,11 +59,11 @@ public class ClienteDao {
 	public void updateCliente(Cliente cliente) {
 		try {
 			java.sql.PreparedStatement prepare = connection.prepareStatement(
-					"UPDATE cliente SET nome = ?, idcliente = ?,ativo = ? WHERE idcliente = ?");
-			prepare.setInt(1, cliente.getIdcliente());
-			prepare.setString(2, cliente.getNome());
-			prepare.setString(3, cliente.getCpf());
-			prepare.setInt(4, cliente.getAtivo());
+					"UPDATE cliente SET nome = ?, cpf = ?, ativo = ? WHERE idcliente = ?");
+			prepare.setString(1, cliente.getNome());
+			prepare.setString(2, cliente.getCpf());
+			prepare.setInt(3, cliente.getAtivo());
+			prepare.setInt(4, cliente.getIdcliente());
 			prepare.executeUpdate();
 
 		} catch (SQLException e) {
