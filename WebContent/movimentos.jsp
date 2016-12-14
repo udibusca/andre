@@ -1,71 +1,89 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
     <title>Movimentos | G.Financeiro</title>
 
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="Sistema financeiro">
     <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css">
+    <link href="javascripts/bbnloading.css" rel="stylesheet" type="text/css">
     <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
     <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
-  </head>
+	<script>
+	function id(el){
+	  return document.getElementById(el);
+	}
+	window.onload = function(){
+	  id('valorCompra').onkeyup = function() {
+	      var v = this.value;
+	      v = v.replace(/[^\d,.]/, '');
+	      this.value = v;
+	  };
+	  id('valorCompra').onblur = function() {
+	    var v = this.value;
+	    this.value = _format(v);
+	  }
+	};
+	</script>    
+</head>
   <body>
     <div class="ls-topbar ">
+		<div class="ls-notification-topbar">
+			<!-- Links de apoio -->
+			<div class="ls-alerts-list">
+				<a href="#" class="ls-ico-question" data-ls-module="topbarCurtain"
+					data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
+			</div>
+			<%
+				String usuario = (String) session.getAttribute("usuario");
+				if (usuario != null) {
+			%>
+			<!-- Dropdown com detalhes da conta de usuário -->
+			<div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
+				<a href="#" class="ls-ico-user"> <span class="ls-name"> <% out.print(usuario); %> </span></a>
+				<nav class="ls-dropdown-nav ls-user-menu">
+					<ul>
+						<li><a href="login?param=logout">Sair</a></li>
+						<%
+							} else {
+								String direcionaURL = "404.jsp";
+								response.sendRedirect(direcionaURL);
+						%>
 
-  <!-- Barra de Notifica��es -->
-  <div class="ls-notification-topbar">
-
-    <!-- Links de apoio -->
-    <div class="ls-alerts-list">
-      <a href="#" class="ls-ico-question" data-ls-module="topbarCurtain" data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
-    </div>
-
-    <!-- Dropdown com detalhes da conta de usu�rio -->
-    <div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
-      <a href="#" class="ls-ico-user">
-        <span class="ls-name">Admim</span>
-        (Usuario)
-      </a>
-
-      <nav class="ls-dropdown-nav ls-user-menu">
-        <ul>
-          <li><a href="#">Sair</a></li>
-         </ul>
-      </nav>
-    </div>
-  </div>
-
+						<h3>Você não tem acesso para acessar está página</h3>
+						<%
+							}
+						%>
+					</ul>
+				</nav>
+			</div>
+		</div>
   <span class="ls-show-sidebar ls-ico-menu"></span>
-
   <a href="#"  class="ls-go-next"><span class="ls-text">Voltar</span></a>
-
   <!-- Nome do produto/marca com sidebar -->
     <h1 class="ls-brand-name">
-      <a href="home" class="ls-ico-earth">
+      <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
         G.Financeiro
       </a>
     </h1>
-
   <!-- Nome do produto/marca sem sidebar quando for o pre-painel  -->
 </div>
-
   <a href="" id="irAoTopo"></a>
   <aside class="ls-sidebar">
   <div class="ls-sidebar-inner">
-      <a href=""  class="ls-go-prev"><span class="ls-text">Voltar</span></a>
+      <a href="javascript:history.back()"  class="ls-go-prev"><span class="ls-text">Voltar</span></a>
       
       <nav class="ls-menu">
         <ul>
            <li><a href="index.jsp" class="ls-ico-dashboard" title="Dashboard">Dashboard</a></li>
            <li><a href="movimentos.jsp" class="ls-ico-trophy" title="Movimentos">Movimentos</a></li>
-           <li><a href="#" class="ls-ico-stats" title="Relat�rios da revenda">Relat�rio mensal</a></li>
+      <!-- <li><a href="relatorioMensal.jsp" class="ls-ico-stats" title="Relatórios da revenda">Relatório mensal</a></li>-->
            <li>
-            <a href="#" class="ls-ico-cog" title="Configura��es">Cadastros</a>
+            <a href="#" class="ls-ico-cog" title="Configurações">Cadastros</a>
             <ul>
               <li><a href="cliente.jsp">Cliente</a></li>
               <li><a href="fornecedor.jsp">Fornecedor</a></li>
@@ -81,168 +99,80 @@
     <main class="ls-main ">
       <div class="container-fluid">
         <h1 class="ls-title-intro ls-ico-trophy">Movimentos</h1>
-		<!-- Migalhas de p�o -->
+		<!-- Migalhas de pão -->
 		<ol class="ls-breadcrumb">
-			<li><a href="index.jsp">In�cio</a></li>
+			<li><a href="index.jsp">Início</a></li>
 			<li>Movimentos</li>
-		</ol><br>
-	
+		</ol>
 		<div class="ls-txt-right">
 		   <button data-ls-module="modal" data-target="#addMovimento" class="ls-btn-primary"> <span class="ls-ico-trophy"> </span> Adicionar movimento</button>
 		</div>
-	    <br>
-		
-		<!-- box de informacao -->
-			<div class="ls-list">
-				<div class="ls-list-content ">
-					<div class="col-xs-12 col-md-6">
-					<span class="ls-list-label">Entradas e Sa�das deste m�s</span>
-					<table class="ls-table ls-sm-space">
-					    <tbody>
-					      <tr>
-					        <td class="ls-color-success">Entradas</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-success">R$ 789,45</td>
-					      </tr> 
-					      <tr>
-					        <td class="ls-color-danger">Saidas</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-danger">- R$ 789,45</td>
-					      </tr> 
-					      <tr>
-					        <td class="ls-color-black">Total</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-black">R$ 789,45</td>
-					      </tr>      
-					    </tbody>
-					  </table>
-					</div>
-					<div class="col-xs-12 col-md-6">
-					<span class="ls-list-label">Balan�o Geral</span>
-					<table class="ls-table ls-sm-space">
-					    <tbody>
-					      <tr>
-					        <td class="ls-color-success">Entradas</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-success">R$ 789,45</td>
-					      </tr> 
-					      <tr>
-					        <td class="ls-color-danger">Saidas</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-danger">- R$ 789,45</td>
-					      </tr> 
-					      <tr>
-					        <td class="ls-color-black">Total</td>
-					        <td></td>
-					        <td></td>
-					        <td class="ls-color-black">R$ 789,45</td>
-					      </tr>      
-					    </tbody>
-					  </table>
-					</div>
-				</div>
-			</div>
-
 		<!-- Filtros -->
 		<div class="ls-box-filter">
-		  <form action="" class="ls-form ls-form-inline">
+		  <form id="filtros" class="ls-form ls-form-inline">
 		    <input name="status" value="" type="hidden">
 		    <label class="ls-label col-lg-3 col-md-6 col-sm-12">
-		      <b class="ls-label-text">Per�odo</b>
+		      <b class="ls-label-text">Período</b>
 		      <div class="ls-custom-select">
-		        <select name="period" id="select_period" class="ls-select">
-		            <option>Hoje</option>
-		            <option>Ontem</option>
-		            <option>�ltima semana</option>
-		            <option>�ltimos 30 dias</option>
-		            <option>�ltimos 6 meses</option>
-		            <option>�ltimos 12 meses</option>
-		            <option>Personalizado</option>
+		        <select name="periodo" id="select_period" class="ls-select" onchange="Movimentos.selecionarPeriodo(this.value)">
+		            <option value="1">Hoje</option>
+		            <option value="2">Ontem</option>
+		            <option value="3">Última semana</option>
+		            <option value="4">Últimos 30 dias</option>
+		            <option value="5">Últimos 6 meses</option>
+		            <option value="6">Últimos 12 meses</option>
+		            <option value="7">Personalizado</option>
 		        </select>
 		      </div>
 		    </label>
-		
 		    <label class="ls-label col-lg-2 col-md-3 col-sm-12">
 		      <div class="ls-prefix-group">
-		        <span data-target="#ls-popover-0" id="new_feature_custom_filter_2" data-ls-module="popover" data-content="Escolha o per�odo desejado e clique em 'Filtrar'."></span>
-		        <input name="range_start" class="datepicker ls-daterange" placeholder="dd/mm/aaaa" id="datepicker1" data-ls-daterange="#datepicker2" type="text">
+		        <span data-target="#ls-popover-0" id="new_feature_custom_filter_2" data-ls-module="popover" data-content="Escolha o período desejado e clique em 'Filtrar'."></span>
+		        <input name="range_start" class="datepicker ls-daterange" placeholder="dd/mm/aaaa" id="range_start" data-ls-daterange="#datepicker2" type="text" disabled="disabled">
 		        <a class="ls-label-text-prefix ls-ico-calendar" data-trigger-calendar="#datepicker1" href="#"></a>
 		      </div>
 		    </label>
 		    <label class="ls-label col-lg-2 col-md-3 col-sm-12">
 		      <div class="ls-prefix-group">
-		        <span data-target="#ls-popover-1" id="new_feature_custom_filter_3" data-ls-module="popover" data-content="Clique em 'Filtrar' para exibir  o per�odo selecionado."></span>
-		        <input data-date-pair="datepicker1" name="range_end" class="datepicker ls-daterange" placeholder="dd/mm/aaaa" id="datepicker2" type="text">
+		        <span data-target="#ls-popover-1" id="new_feature_custom_filter_3" data-ls-module="popover" data-content="Clique em 'Filtrar' para exibir  o período selecionado."></span>
+		        <input data-date-pair="datepicker1" name="range_end" class="datepicker ls-daterange" placeholder="dd/mm/aaaa" id="range_end" type="text" disabled="disabled">
 		        <a class="ls-label-text-prefix ls-ico-calendar" data-trigger-calendar="#datepicker2" href="#"></a>
 		      </div>
 		    </label>
 
-		    <label class="ls-label col-lg-3 col-md-6 col-sm-12">
+		    <label class="ls-label col-lg-4 col-md-8 col-sm-12">
 		      <b class="ls-label-text">Categoria</b>
 		      <div class="ls-custom-select">
-		        <select name="categoria" id="select_categoria" class="ls-select">
-		            <option>Categoria1</option>
-		            <option>Categoria2</option>
-		            <option>Categoria3</option>
-		            <option>Categoria4</option>
+		        <select name="categoria" class="ls-select select_categoria">
+		        <option>Selecione</option>
 		        </select>
 		      </div>
 		    </label>
 		    </label>
 		    <input class="ls-btn-primary" value="Filtrar" type="submit">
-		    <div data-ls-module="dropdown" class="ls-dropdown ls-float-right ls-float-none-sm ls-float-none-md ls-pos-right" id="step4">
-		      <a href="#" class="ls-btn" role="combobox" aria-expanded="false">Exportar</a>
-		      <ul class="ls-dropdown-nav" aria-hidden="true">
-		        <li><a href="" role="option" tabindex="-1">CSV</a></li>
-		        <li><a data-action="open_modal_export" data-ls-module="modal" data-report-ext="XLS" data-target="#modal_export" href="" role="option" tabindex="-1">XLS</a></li>
-		      </ul>
-		    </div>
 		  </form>
 		</div>
 	<!-- Grid de registros -->
-	<table class="ls-table ls-table-striped">
-	  <thead>
-	    <tr>
-	      <th>Descri��o</th>
-	      <th>Categoria</th>
-	      <th>Cliente/Fornecedor</th>
-	      <th>Valor</th>
-	      <th>Dta Cadastro</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	    <% for(int i = 0; i < 15; i++) { %>
-	      <td>Descri��o do movimento</td>
-	      <td>Categoria1</td>
-	      <td>Nome do cliente/fornecedor</td>
-	      <td>R$ 112,00</td>
-		  <td>21/09/2013 as 13:45</td>
-	   </tr>
-	    <% }%>
-	  </tbody>
-	</table>
-		<!-- Pagina��o da tabela -->
-		<div class="ls-pagination-filter">
-		  <ul class="ls-pagination">
-		    <li class="ls-disabled"><a href="#">&laquo; Anterior</a></li>
-		    <li><a href="#">1</a></li>
-		    <li><a href="#">2</a></li>
-		    <li class="ls-active"><a href="#">3</a></li>
-		    <li><a href="#">4</a></li>
-		    <li><a href="#">5</a></li>
-		    <li><a href="#">Pr�ximo &raquo;</a></li>
-		  </ul>
-		</div>
+	<div id="containerTbl">
+		<table class="ls-table ls-table-striped">
+		  <thead>
+		    <tr>
+		      <th>Descrição</th>
+		      <th>Categoria</th>
+		      <th>Cliente/Fornecedor</th>
+		      <th>Valor</th>
+		      <th>Dta Cadastro</th>
+		      <th>Ações</th>
+		    </tr>
+		  </thead>
+		  <tbody id="tabela"></tbody>
+		</table>
+	</div>
         <div class="ls-txt-center">
         	<a href="#irAoTopo" class="ls-btn-primary ls-btn-lg ls-ico-circle-up">Ir ao topo</a>
         </div>
         </br>
+        
 		<!-- Modal de Add Movimento -->
 		<div class="ls-modal" id="addMovimento">
 		<form id="addMov" method="GET" class="ls-form ls-form-horizontal row">
@@ -253,49 +183,118 @@
 		    </div>
 		    <div class="ls-modal-body">
 			  <fieldset>
-			    <label class="ls-label col-md-4 col-xs-12">
-		        <div class="ls-prefix-group">
-		          <b class="ls-label-text">Cliente / Fornecedor</b>
-		          <input type="text" name="cpf-cnpj" placeholder="CPF/CNPJ" class="ls-field">
-		        </div>
+			    <label class="ls-label col-md-6 col-xs-12">
+			          <b class="ls-label-text">Tipo de movimentação</b>
+			          <div class="ls-custom-select col-md-6 col-xs-12">
+			          <select name="tipo_mov" id="tipo_mov" onchange="Movimentos.changingForm(this.value)">
+				          <option value="1">Cliente</option>
+				          <option value="2">Fornecedor</option>
+				          <option value="0">Outros</option>
+			          </select>
+			          </div>
 			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
+			    <label id="containercpf_cnpj" class="ls-label col-md-6 col-xs-12">
+		          <b class="ls-label-text">CPF (Somente numeros)</b>
+			      <input type="number" maxlength="11" name="cpf_cnpj" id="cpf_cnpj" class="ls-field" 
+			      onfocusout="Movimentos.buscaIdcliente_fornecedor(this.value)"
+			      data-ls-module="charCounter">
+		         </label>
+		        <div class="col-md-12 col-xs-12" id="container_valores" style="padding:0;">
+		        	<label class="ls-label col-md-6 col-xs-12">
+				      	<b class="ls-label-text">Nome do cliente</b>
+				      	<input type="text" id="nomeCliente" class="ls-field col-md-6" disabled>
+			      	</label>
+			      	<label class="ls-label col-md-6 col-xs-12">
+				      	<b class="ls-label-text">Saldo do cliente</b>
+				      	<div class="ls-prefix-group">
+				      		<span class="ls-label-text-prefix">R$</span>
+				      		<input type="text" id="saldoCliente" class="ls-field col-md-6" disabled>
+				      	</div>
+			      	</label>
+			      	
+				    <label class="ls-label col-md-6 col-xs-12">
+				      	<b class="ls-label-text">Valor do produto</b>
+				      	<div class="ls-prefix-group">
+  			  			<span class="ls-label-text-prefix">R$</span>
+				      	<input type="text" name="valorCompra"  
+				      	onfocusout="Movimentos.onlyNumbers(this); Movimentos.verificarUsoSaldo(this.value)" 
+				      	placeholder="Valor do produto ou serviço Exemplo: 500,39" 
+				      	class="ls-field col-md-6" 
+				      	onfocusout="Movimentos.verificarUsoSaldo()" required>
+				      	</div>
+			      	</label>
+			      	<label class="ls-label col-md-6 col-xs-12">
+				      	<b class="ls-label-text">Usar saldo ?</b>
+					    <input type="checkbox" name="usarSaldo" id="usarSaldo">
+			      	</label>
+			    </div>
+			    <label class="ls-label col-md-6 col-xs-12">
 		          <b class="ls-label-text">Categoria</b>
 		           <div class="ls-custom-select">
-			        <select name="categoria" id="select_categoria" class="ls-select">
-			            <option>Categoria1</option>
-			            <option>Categoria2</option>
-			            <option>Categoria3</option>
-			            <option>Categoria4</option>
+			        <select name="idcategoria" class="ls-select select_categoria">
 			        </select>
 		          </div>
 		         </label>
-			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-			      <b class="ls-label-text">Valor Entrada / Saida</b>
-			      <input type="text" name="valor" placeholder="" class="ls-field" required>
-			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-			      <b class="ls-label-text">Valor</b>
-			      <input type="text" name="valor" placeholder="" class="ls-field" required>
 			    </label>			    
 			    <label class="ls-label col-md-12 col-xs-12">
-			      <b class="ls-label-text">Descri��o</b>
-			      <input type="text" name="descricao" placeholder="" class="ls-field" required>
+			      <b class="ls-label-text">Descrição</b>
+			      <textarea type="" name="dsc" placeholder="" class="ls-field" data-ls-module="charCounter" 
+			      maxlength="100" required></textarea>
 			    </label>
-
 			  </fieldset>		      
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
-		      <button type="submit" class="ls-btn-primary">Salvar</button>
+		      <button type="submit" id="enviaMovimentacao" class="ls-btn-primary ls-disabled">Salvar</button>
 		      <button type="reset" class="ls-btn">Limpar</button>
 		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
 		    </div>
 		  </div>
 		 </form>
 		</div>
+		
+		<!-- Modal de edição -->
+		<div class="ls-modal" id="editMovimento">
+		<form id="editMov" method="GET" class="ls-form ls-form-horizontal row">
+		  <div class="ls-modal-large">
+		    <div class="ls-modal-header">
+		      <button data-dismiss="modal">&times;</button>
+		      <h4 class="ls-modal-title">Editar Movimento</h4>
+		    </div>
+		    <div class="ls-modal-body">
+			  <fieldset>
+			    <label class="ls-label col-md-12 col-xs-12">
+			          <b class="ls-label-text">Tipo de movimentação</b>
+			          <input type="text" id="tipo_movEditar" disabled>
+			          <input type="hidden" id="id" name="id">
+			    </label>
+			    <label class="ls-label col-md-12 col-xs-12">
+				      	<b class="ls-label-text">Nome do cliente</b>
+				      	<input type="text" id="nomeClienteEditar" disabled>
+			    </label>
+				<label class="ls-label col-md-12 col-xs-12">
+				<b class="ls-label-text">Valor Movimentação</b>
+					<span class="ls-prefix-group">
+	  			  		<span class="ls-label-text-prefix">R$</span>
+					    <input type="text" name="valorEditar" id="valorEditar" disabled>
+					</span>
+			    </label>
+			    <label class="ls-label col-md-12 col-xs-12">
+				      	<b class="ls-label-text">Categoria</b>
+				      	<input type="text" id="categoriaEditar" disabled>
+			    </label>	    
+			    <label class="ls-label col-md-12 col-xs-12">
+			      <b class="ls-label-text">Descrição</b>
+			      <textarea type="" name="dsc" id="dscEditar" placeholder="" class="ls-field" required></textarea>
+			    </label>
 
-
+			  </fieldset>		      
+		    </div>
+		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
+		      <button type="submit" id="enviaMovimentacao" class="ls-btn-primary">Editar</button>
+		    </div>
+		  </div>
+		 </form>
+		</div>
       <!-- Fim conteudo -->   
       </div>
     </main>
@@ -313,66 +312,387 @@
     <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> -->
     <script src="javascripts/libs/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="javascripts/locastyle.js" type="text/javascript"></script>
+    <script src="javascripts/bbnloading.js" type="text/javascript"></script>
+
+    <script>    
+    var Movimentos = {};
+    	//cpf-cnpj
+    	Movimentos.buscaIdcliente_fornecedor = function(cpf_cnpj){
+    		$.ajax({
+	    		url:'http://localhost:8080/app/movimentacao',
+	    		method:'GET',
+	    		cache:false,
+	    		data:{metodo:'getidcliente_fornecedor',cpf_cnpj:cpf_cnpj},
+	    		beforeSend: function(){
+	    			//cria o loader
+	    			BbnLoading.createSpin();
+	    		},
+	    		success: function(data){
+	    			//mata o loader no callback de sucesso da requisição ajax
+	    			BbnLoading.removeModalDiv();
+	    			if(data.length >= 1){
+	    				$("#cpf_cnpj").removeClass('invalidIdMovimento');
+	    				$("#enviaMovimentacao").removeClass('ls-disabled');
+	    				
+	    				if(!!data[0].idfornecedor && $("#tipo_mov").val() == '2'){
+	    					var node = document.createElement("input");
+		    				node.type='hidden';
+		    				node.value=data[0].idfornecedor;
+		    				node.name='idfornecedor';
+		    				document.getElementById('addMov').appendChild(node);
+		    				document.getElementById('nomeCliente').value = data[0].nome;
+		    				document.getElementById('saldoCliente').value = "Não aplicável";
+	    				}else if(!!data[0].idcliente && $("#tipo_mov").val() == '1'){
+	    					var node = document.createElement("input");
+		    				node.type='hidden';
+		    				node.value=data[0].idcliente;
+		    				node.name='idcliente';
+		    				document.getElementById('addMov').appendChild(node);
+		    				document.getElementById('nomeCliente').value = data[0].nome;
+		    				document.getElementById('saldoCliente').value = data[0].saldo;
+	    				}else{
+	    					document.getElementById('cpf_cnpj').className='invalidIdMovimento';
+	    				}
+	    			}else{
+	    				document.getElementById('cpf_cnpj').className='invalidIdMovimento';
+	    			}
+	    		}
+    		});
+    	}
+    	
+    	Movimentos.changingForm = function(value){
+    		switch(value){
+    		//cliente
+    		case'1':
+    			document.getElementById('containercpf_cnpj').innerHTML = ""+
+    			'<b class="ls-label-text">CPF (Somente números)</b>'+
+  			    '<input type="number" maxlength="11" name="cpf_cnpj" id="cpf_cnpj" onfocusout="Movimentos.buscaIdcliente_fornecedor(this.value)" class="ls-field">';
+  			    document.getElementById('container_valores').innerHTML = ""+
+  			  	'<label class="ls-label col-md-6 col-xs-12">'+
+			    '  	<b class="ls-label-text">Nome do cliente</b>'+
+			    '  	<input type="text" id="nomeCliente" class="ls-field col-md-6" disabled>'+
+		      	'</label>'+
+		      	'<label class="ls-label col-md-6 col-xs-12">'+
+			    '  	<b class="ls-label-text">Saldo do cliente</b>'+
+			    '  	<div class="ls-prefix-group">'+
+			  	'	<span class="ls-label-text-prefix">R$</span>'+
+			    '  	<input type="text" id="saldoCliente" class="ls-field col-md-6" disabled>'+
+			    '  	</div>'+
+		      	'</label>'+
+			  	'<label class="ls-label col-md-6 col-xs-12">'+
+			  	'  	<b class="ls-label-text">Valor do produto</b>'+
+			  	'  	<div class="ls-prefix-group">'+
+			  	'	<span class="ls-label-text-prefix">R$</span>'+
+			  	'  	<input type="text" name="valorCompra" id="valorCompra" onfocusout="Movimentos.onlyNumbers(this); Movimentos.verificarUsoSaldo(this.value);" placeholder="Valor do produto ou serviço" class="ls-field col-md-6" onfocusout="Movimentos.verificarUsoSaldo()" required>'+
+			  	'  	</div>'+
+		      	'</label>'+
+		      	'<label class="ls-label col-md-6 col-xs-12">'+
+			  	'  	<b class="ls-label-text">Usar saldo ?</b>'+
+				'    <input type="checkbox" name="usarSaldo" id="usarSaldo">'+
+		      	'</label>';
+    			break;
+    		//fornecedor
+    		case'2':
+    			document.getElementById('containercpf_cnpj').innerHTML = ""+
+    			'<b class="ls-label-text">CNPJ (Somente números)</b>'+
+  			    '<input type="number" maxlength="14" name="cpf_cnpj" id="cpf_cnpj" onfocusout="Movimentos.buscaIdcliente_fornecedor(this.value)" class="ls-field">';
+  			  	document.getElementById('container_valores').innerHTML = ""+
+  			  	'<label class="ls-label col-md-6 col-xs-12">'+
+			    '  	<b class="ls-label-text">Nome do fornecedor</b>'+
+			    '  	<input type="text" id="nomeCliente" class="ls-field col-md-6" disabled>'+
+		      	'</label>'+
+		      	'<label class="ls-label col-md-6 col-xs-12">'+
+			    '  	<b class="ls-label-text">Saldo do cliente</b>'+
+			    '  	<input type="text" id="saldoCliente" class="ls-field col-md-6" disabled>'+
+		      	'</label>'+
+			  	'<label class="ls-label col-md-6 col-xs-12">'+
+			  	'  	<b class="ls-label-text">Valor da movimentação</b>'+
+			  	'  	<div class="ls-prefix-group">'+
+			  	'	<span class="ls-label-text-prefix">-</span>'+
+			  	'  	<input type="text" name="valor" id="valor" onfocusout="Movimentos.onlyNumbers(this)" placeholder="Exemplo: 500,39" class="ls-field col-md-6" onfocusout="Movimentos.verificarUsoSaldo()" required>'+
+			  	'	<span class="ls-label-text-prefix">Saída</span>'+
+			  	'  	</div>'+
+		      	'</label>';
+    			break;
+    		//outros
+    		case'0':
+    			$("#containercpf_cnpj").find('input').attr('disabled', 'disabled');
+    			document.getElementById('container_valores').innerHTML = ""+
+  			  	'<label class="ls-label col-md-6 col-xs-12">'+
+		      	'<b class="ls-label-text">Valor da movimentação (Entrada ou saída)</b>'+
+		      	'<input type="text" name="valor" id="valor" onfocusout="Movimentos.onlyNumbers(this)" placeholder="Exemplo: 500,39" class="ls-field col-md-6" required>'
+		      	'</label>';
+    			break;
+    		}
+    	}
+    	
+    	Movimentos.floatToMoney = function(price){
+    		price = new String(price).replace('.', ',')
+    		if(price < 0) return '-R$ '+price;
+    		else return "R$ "+price;
+    	}
+    	
+    	Movimentos.tratarForm = function(data){
+    		if(!!data.valorCompra){
+    			data.valorCompra = data.valorCompra.replace(',', '.');	
+    			if(data.usarSaldo == 'on') data.saldo = parseFloat($("#saldoCliente").val().replace('R$', '').replace(',', '.')) - parseFloat(data.valorCompra);
+    			data.valor = data.valorCompra;
+        		delete data.valorCompra;
+    		}else{
+    			data.valor = data.valor.replace(',','.');
+    			data.valor = parseFloat(data.valor).toFixed(2);
+    		}
+    		
+    		//se for uma movimentação proveniente de fornecedor, ele tem que ser negativo
+    		if(data.tipo_mov == '2'){
+    			data.valor = '-'+data.valor;
+    		}
+    		
+    		return data;
+		}
+    	
+    	Movimentos.verificarUsoSaldo = function(){
+    		var preco = parseFloat(document.getElementById('valorCompra').value.replace(',','.'));
+    		var saldo = parseFloat(document.getElementById('saldoCliente').value.replace('R$', '').replace(',', '.'));
+    		if(preco > saldo){
+    			document.getElementById('usarSaldo').setAttribute('disabled', 'disabled')
+    		}else{
+    			document.getElementById('usarSaldo').removeAttribute('disabled');
+    		}
+    	}
+    	
+    	Movimentos.onlyNumbers = function(element){
+    		var reg = /([0-9]{1,}),([0-9]{2}$)/g;
+    		if(!reg.test(element.value)) element.value = '';
+    	}
+    	
+    	Movimentos.selecionarPeriodo  = function(valor){
+    		if(valor != '7'){
+    			$("#range_start").attr('disabled', 'disabled');
+    			$("#range_end").attr('disabled', 'disabled');
+    		}else if(valor == '7'){
+    			$("#range_start").removeAttr('disabled', 'disabled');
+    			$("#range_end").removeAttr('disabled', 'disabled');
+    		}
+    	}
+    	
+    	$("#addMov").submit(function(e) {
+    		e.preventDefault();
+    		
+    		var formData = $("#addMov").serializeArray();
+    		var data = {};
+    		
+    		for(i in formData){
+    			data[formData[i].name] = formData[i].value;
+    		}
+    		data = Movimentos.tratarForm(data);
+    		
+    		var url = "http://localhost:8080/app/movimentacao?metodo=cadastrar";
+    	    $.ajax({
+    				type: "GET",
+    				url: url,
+    				data: data,
+    				success: function(data){
+    					$("#addMov").each (function(){
+    			            this.reset();
+    			        });
+    				    locastyle.modal.close();  // fecha a modal
+    		    	    setTimeout(function(){location.reload()}, 500);
+    				}
+    			});
+    	});
+    	
+	    $(function () {
+	    	$.date = function(dateObject) {
+	            var d = new Date(dateObject);
+	            var dia = d.getDate();
+	            var mes = d.getMonth() + 1;
+	            var ano = d.getFullYear();
+	            if (dia < 10) {
+	                dia = "0" + dia;
+	            }
+	            if (mes < 10) {
+	                mes = "0" + mes;
+	            }
+	            var date = dia + "/" + mes + "/" + ano;
+	            return date;
+	        };
+	        
+	        //pega todas as categorias e popula os selects com os options
+	        $.ajax({
+	    		url:'http://localhost:8080/app/categoria',
+	    		method:'GET',
+	    		cache:false,
+	    		data:{metodo:'listar'},
+	    		success:function(data){
+	    			var teste = '';
+	    			for(i in data){
+	    				teste+='<option value="'+data[i].idcategoria+'">'+data[i].nome+'</option>';
+	    			}
+	    			$(".select_categoria").append(teste);
+	    		}
+	        });
+	        
+	    	$.ajax({
+	    		url:'http://localhost:8080/app/movimentacao',
+	    		method:'GET',
+	    		cache:false,
+	    		data:{metodo:'listar'},
+	    		beforeSend: function(){
+	    			//cria o loader
+	    			BbnLoading.createSpin();
+	    		},
+	    		success: function(dados){
+	    			
+	    			//mata o loader no callback de sucesso da requisição ajax
+	    			BbnLoading.removeModalDiv();
+	    			
+	    			if(dados.length <= 0){
+	    				//manipulação do dom para 
+	    				var node = document.createElement("p");
+	    				var textnode = document.createTextNode("Não há dados para serem listados");
+	    				node.appendChild(textnode); 
+	    				document.getElementById('containerTbl').appendChild(node);
+	    			}
+	    			else
+	        			for(i in dados){
+	        				//console.log(dados);
+	        				id = dados[i].id;
+	        				var newRow = $("<tr>");
+	        			    var cols = "";
+	        			    
+	        			    valorAtual = (dados[i].valor < 0) ? '<span style="color:red">'+Movimentos.floatToMoney(dados[i].valor.toFixed(2))+'</span>' : '<span style="color:green">'+Movimentos.floatToMoney(dados[i].valor.toFixed(2))+'</span>';
+	        			    
+	        			    cols += '<td>'+dados[i].dsc+'</td>';
+	        			    cols += '<td>'+dados[i].nome_categoria+'</td>';
+	        			    cols += '<td>'+dados[i].cliente_fornecedor+'</td>';
+	        			    cols += '<td>'+valorAtual+'</td>';
+	        			    cols += '<td>'+$.date(dados[i].data_cadastro)+'</td>';
+	        			    cols += '<td>';
+	        			    cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';
+	        			    cols += '<a href="#" onclick="cancelarRegistro('+id+')" class="ls-btn-primary-danger ls-btn-sm">Cancelar</a>';
+	        			    cols += '</td>';
+	
+	        			    newRow.append(cols);
+	        			    $("#tabela").append(newRow);
+	        			}		
+	    		} 
+	    	});
+	    	
+	    	$("#editMov").submit(function(e) {
+	    	    var url = "http://localhost:8080/app/movimentacao?metodo=atualiza";
+	    	    $.ajax({
+	    				type: "GET",
+	    				url: url,
+	    				data: $("#editMov").serialize(),
+	    				success: function(data){
+	    				    locastyle.modal.close();  // fecha a modal
+	    		    	    location.reload();        // carrega pagina
+	    				}
+	    			});
+	    	    e.preventDefault();
+	    	});
+	    	
+	    	$("#filtros").submit(function(e) {
+	    	    var url = "http://localhost:8080/app/movimentacao?metodo=filtrar";
+	    	    $.ajax({
+	    				type: "GET",
+	    				url: url,
+	    				data: $("#filtros").serialize(),
+	    				success: function(data){
+	    				    console.log(data);
+	    				}
+	    			});
+	    	    e.preventDefault();
+	    	}); 
+	    	
+	    	//Pega os totais do balanço geral
+	    	var urlTotais = "http://localhost:8080/app/movimentacao?metodo=getTotais";
+	    	$.ajax({
+	    	type: "GET",
+	    		url: urlTotais,
+	    		success: function(data){
+	    		   	var entradas = 0;
+					var saidas = 0;
+					var total = 0;
+	    			for(i in data){
+	    				entradas += data[i].entrada;
+	    				saidas += data[i].saida;
+	    		   	}
+
+	    			total = entradas - saidas;
+	    			entradas = Movimentos.floatToMoney(new String(entradas.toFixed(2)));
+	    			saidas = Movimentos.floatToMoney(new String(saidas.toFixed(2)));
+	    			
+	    			document.getElementById('entradasGerais').innerHTML = entradas;
+	    			document.getElementById('saidasGerais').innerHTML = "-"+saidas;
+	    			document.getElementById('totalGerais').innerHTML = (total < 0) ? '<span class="ls-color-danger">'+Movimentos.floatToMoney(new String(total.toFixed(2)))+'</span>' : Movimentos.floatToMoney(new String(total.toFixed(2)));
+	    		}
+	    	});
+	    	//Pega os totais do balanço geral
+	    	var urlTotaisCurrentMonth = "http://localhost:8080/app/movimentacao?metodo=getTotaisCurrentMonth";
+	    	$.ajax({
+	    	type: "GET",
+	    		url: urlTotaisCurrentMonth,
+	    		success: function(data){
+	    		   	var entradas = 0;
+					var saidas = 0;
+					var total = 0;
+	    			for(i in data){
+	    				entradas += data[i].entrada;
+	    				saidas += data[i].saida;
+	    		   	}
+
+	    			total = entradas - saidas;
+	    			entradas = Movimentos.floatToMoney(new String(entradas.toFixed(2)));
+	    			saidas = Movimentos.floatToMoney(new String(saidas.toFixed(2)));
+	    			
+	    			document.getElementById('entradasCurrentMonth').innerHTML = entradas;
+	    			document.getElementById('saidasCurrentMonth').innerHTML = "-"+saidas;
+	    			document.getElementById('totaisCurrentMonth').innerHTML = (total < 0) ? '<span class="ls-color-danger">'+Movimentos.floatToMoney(new String(total.toFixed(2)))+'</span>' : Movimentos.floatToMoney(new String(total.toFixed(2)));
+	    		}
+	    	});
+	    	
+	    });
+
+    	// função editar
+    	function editarRegistro(id) {
+        	var url = 'http://localhost:8080/app/movimentacao';
+        	$.ajax ({
+        		url: url+"?metodo=editar&id="+id,
+    	        type:'GET',
+    	        success:function(data){
+    	        	for(i in data){
+	    	        	$("#tipo_movEditar").val(data[i].tipo_movimentacao);
+	    	        	$("#nomeClienteEditar").val(data[i].cliente_fornecedor);
+	    	        	$("#valorEditar").val(data[i].valor);
+	    	        	$("#categoriaEditar").val(data[i].nome_categoria);
+	    	        	$("#dscEditar").val(data[i].dsc);
+	    	        	$("#id").val(data[i].id);
+    	        	}
+    	        }
+        	});
+        	locastyle.modal.open("#editMovimento");
+          }
+    	function cancelarRegistro(id) {
+        	var url = 'http://localhost:8080/app/movimentacao';
+        	$.ajax ({
+        		url: url+"?metodo=cancelar&id="+id,
+    	        type:'GET',
+				beforeSend: function(){
+	    			//cria o loader
+	    			BbnLoading.createSpin();
+	    		},
+    	        success:function(data){
+    	        	//cria o loader
+	    			BbnLoading.removeModalDiv();
+    	        	
+    	        	if(data.result == 'OK'){
+    	        		location.reload();
+    	        	}
+            	}
+    	    });
+        }
+    </script>
   </body>
 </html>
-
-
-<!-- 		<div class="ls-modal" id="addMovimento">
-		<form id="addMov" method="GET" class="ls-form ls-form-horizontal row">
-		  <div class="ls-modal-large">
-		    <div class="ls-modal-header">
-		      <button data-dismiss="modal">&times;</button>
-		      <h4 class="ls-modal-title">Adicionar Movimento</h4>
-		    </div>
-		    <div class="ls-modal-body">
-			  <fieldset>
-			    <label class="ls-label col-md-4 col-xs-12">
-		        <div class="ls-prefix-group">
-		          <b class="ls-label-text">Data</b>
-		          <input name="data_movimento" class="datepicker ls-daterange" placeholder="dd/mm/aaaa" id="datepicker1" data-ls-daterange="#datepicker2" type="text">
-		        </div>
-			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-		          <b class="ls-label-text">Categoria</b>
-		           <div class="ls-custom-select">
-			        <select name="categoria" id="select_categoria" class="ls-select">
-			            <option>Categoria1</option>
-			            <option>Categoria2</option>
-			            <option>Categoria3</option>
-			            <option>Categoria4</option>
-			        </select>
-		          </div>
-		         </label>
-			    </label>
-			    <label class="ls-label col-md-4 col-xs-12">
-			      <b class="ls-label-text">Valor</b>
-			      <input type="text" name="valor" placeholder="" class="ls-field" required>
-			    </label>
-			    <label class="ls-label col-md-12 col-xs-12">
-					<b class="ls-label-text">Cliente / Fornecedor</b>			    
-				    <label class="ls-label col-md-2 col-xs-12">
-				      <input type="text" name="cpf-cnpj" placeholder="CPF/CNPJ" class="ls-field">
-				    </label>			    
-				    <label class="ls-label col-md-8 col-xs-12">			      
-				      <input type="text" name="cliente-fornecedor" placeholder="Caso foi saida ou entrada de Cliente / Fornecedor" class="ls-field">
-				    </label>
-			    </label>
-			    <label class="ls-label col-md-12 col-xs-12">
-			      <b class="ls-label-text">Descri��o</b>
-			      <input type="text" name="descricao" placeholder="" class="ls-field" required>
-			    </label>
-
-			  </fieldset>		      
-		    </div>
-		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
-		      <button type="submit" class="ls-btn-primary">Salvar</button>
-		      <button type="reset" class="ls-btn">Limpar</button>
-		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
-		    </div>
-		  </div>
-		 </form>
-		</div> -->
-
-
-
-

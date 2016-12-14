@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 <title>Esqueci minha senha | G.Financeiro</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />

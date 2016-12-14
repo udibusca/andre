@@ -1,16 +1,16 @@
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
     <title>Cadastro de fornecedores | G.Financeiro</title>
 
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="Sistema financeiro">
     <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css">
+    <link href="javascripts/bbnloading.css" rel="stylesheet" type="text/css">
     <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
     <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
     
@@ -19,47 +19,57 @@
   <body>
     <div class="ls-topbar ">
 
-  <!-- Barra de NotificaÁıes -->
-  <div class="ls-notification-topbar">
+  <!-- Barra de Notifica√ß√µes -->
 
-    <!-- Links de apoio -->
-    <div class="ls-alerts-list">
-      <a href="#" class="ls-ico-question" data-ls-module="topbarCurtain" data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
-    </div>
+		<div class="ls-notification-topbar">
 
-    <!-- Dropdown com detalhes da conta de usu·rio -->
-    <div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
-      <a href="#" class="ls-ico-user">
-        <span class="ls-name">Admim</span>
-        (Usuario)
-      </a>
+			<!-- Links de apoio -->
+			<div class="ls-alerts-list">
+				<a href="#" class="ls-ico-question" data-ls-module="topbarCurtain"
+					data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
+			</div>
+			<%
+				String usuario = (String) session.getAttribute("usuario");
+				if (usuario != null) {
+			%>
+			<!-- Dropdown com detalhes da conta de usu√°rio -->
+			<div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
+				<a href="#" class="ls-ico-user"> <span class="ls-name">
+						<%
+							out.print(usuario);
+						%>
+				</span>
+				</a>
 
-      <nav class="ls-dropdown-nav ls-user-menu">
-        <ul>
-          <li><a href="#">Sair</a></li>
-         </ul>
-      </nav>
-    </div>
-  </div>
+				<nav class="ls-dropdown-nav ls-user-menu">
+					<ul>
+						<li><a href="login?param=logout">Sair</a></li>
+						<%
+							} else {
+								String direcionaURL = "404.jsp";
+								response.sendRedirect(direcionaURL);
+						%>
 
+						<h3>Voc√™ n√£o tem acesso para acessar est√° p√°gina</h3>
+						<%
+							}
+						%>
+					</ul>
+				</nav>
+			</div>
+		</div>
   <span class="ls-show-sidebar ls-ico-menu"></span>
-
-  <a href="#"  class="ls-go-next"><span class="ls-text">Voltar</span></a>
-
+  <a href="javascript:history.back()"  class="ls-go-next"><span class="ls-text">Voltar</span></a>
   <!-- Nome do produto/marca com sidebar -->
     <h1 class="ls-brand-name">
-      <a href="home" class="ls-ico-earth">
+      <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
         G.Financeiro
       </a>
     </h1>
-
   <!-- Nome do produto/marca sem sidebar quando for o pre-painel  -->
 </div>
-
-
     <aside class="ls-sidebar">
-
   <div class="ls-sidebar-inner">
       <a href=""  class="ls-go-prev"><span class="ls-text">Voltar</span></a>
 
@@ -67,14 +77,14 @@
         <ul>
            <li><a href="index.jsp" class="ls-ico-dashboard" title="Dashboard">Dashboard</a></li>
            <li><a href="movimentos.jsp" class="ls-ico-trophy" title="Movimentos">Movimentos</a></li>
-           <li><a href="#" class="ls-ico-stats" title="RelatÛrios da revenda">RelatÛrio mensal</a></li>
+      <!-- <li><a href="relatorioMensal.jsp" class="ls-ico-stats" title="Relat√≥rios da revenda">Relat√≥rio mensal</a></li>-->
            <li>
-            <a href="#" class="ls-ico-cog" title="ConfiguraÁıes">Cadastros</a>
+            <a href="#" class="ls-ico-cog" title="Configura√ß√µes">Cadastros</a>
             <ul>
               <li><a href="cliente.jsp">Cliente</a></li>
               <li><a href="fornecedor.jsp">Fornecedor</a></li>
               <li><a href="categoria.jsp">Categoria</a></li>
-              <li><a href="usuario.jsp">Usu·rio</a></li>
+              <li><a href="usuario.jsp">Usu√°rio</a></li>
             </ul>
           </li>
         </ul>
@@ -87,9 +97,9 @@
     <main class="ls-main ">
 	<div class="container-fluid">
 		<h1 class="ls-title-intro ls-ico-bullhorn">Fornecedor</h1>
-		<!-- Migalhas de p„o -->
+		<!-- Migalhas de p√£o -->
 		<ol class="ls-breadcrumb">
-			<li><a href="index.jsp">InÌcio</a></li>
+			<li><a href="index.jsp">In√≠cio</a></li>
 			<li>Fornecedor</li>
 		</ol><br>
 		
@@ -97,30 +107,20 @@
 		   <button data-ls-module="modal" data-target="#myAwesomeModal" class="ls-btn-primary"> <span class="ls-ico-user-add"> </span> Cadastrar novo fornecedor</button>
 		</div>
 		<!-- Grid de registros -->
-	<table class="ls-table ls-table-striped">
-	  <thead>
-	    <tr>
-	      <th>N∞Registro</th>	    
-	      <th>CNPJ</th>
-	      <th>Nome Fantasia</th>
-	      <th>Dta Cadastro</th>
-	      <th></th>
-	    </tr>
-	  </thead>
-	<tbody id="tabela"></tbody>
-	</table>
-	<!-- PaginaÁ„o da tabela -->
-	<div class="ls-pagination-filter">
-	  <ul class="ls-pagination">
-	    <li class="ls-disabled"><a href="#">&laquo; Anterior</a></li>
-	    <li><a href="#">1</a></li>
-	    <li><a href="#">2</a></li>
-	    <li class="ls-active"><a href="#">3</a></li>
-	    <li><a href="#">4</a></li>
-	    <li><a href="#">5</a></li>
-	    <li><a href="#">PrÛximo &raquo;</a></li>
-	  </ul>
-	</div>	
+		<div id="containerTbl">
+			<table class="ls-table ls-table-striped">
+			  <thead>
+			    <tr>
+			      <th>N¬∞Registro</th>	    
+			      <th>CNPJ</th>
+			      <th>Nome Fantasia</th>
+			      <th>Dta Cadastro</th>
+			      <th></th>
+			    </tr>
+			  </thead>
+			<tbody id="tabela"></tbody>
+			</table>
+		</div>	
 	</div>
 
 		<!-- Modal de cadastro fornecedor -->
@@ -128,14 +128,14 @@
 		<form  id="cfornecedor" method="GET" class="ls-form ls-form-horizontal row">
 		  <div class="ls-modal-large">
 		    <div class="ls-modal-header">
-		      <button data-dismiss="modal">&times;</button>
+		      <a data-dismiss="modal">&times;</a>
 		      <h4 class="ls-modal-title">Cadastrar novo Fornecedor</h4>
 		    </div>
 		    <div class="ls-modal-body">
 			  <fieldset>
 			    <label class="ls-label col-md-4 col-xs-12">
-				   <b class="ls-label-text">CNJP</b>
-				   <input type="text" name="cnpj" class="ls-mask-cnjp" placeholder="000.000.000-00" >
+				   <b class="ls-label-text">CNJP (Somente n√∫meros)</b>
+				   <input type="text" name="cnpj" id="cnpj" onfocusout="validaCampoCnpj(this, false)" placeholder="0000000000000" maxlength="14">
 			    </label>
 			    <label class="ls-label col-md-4 col-xs-12">
 			      <b class="ls-label-text">Nome Fantasia</b>
@@ -146,7 +146,7 @@
 			  </fieldset>		      
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
-		      <button type="submit" class="ls-btn-primary">Salvar</button>
+		      <button type="submit" id="salvarFornecedor" class="ls-btn-primary">Salvar</button>
 		      <button type="reset" class="ls-btn">Limpar</button>
 		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
 		    </div>
@@ -160,18 +160,18 @@
 		<form  id="editarfornecedor" method="GET" class="ls-form ls-form-horizontal row">
 		  <div class="ls-modal-large">
 		    <div class="ls-modal-header">
-		      <button data-dismiss="modal">&times;</button>
+		      <a data-dismiss="modal">&times;</a>
 		      <h4 class="ls-modal-title">Cadastrar novo Fornecedor</h4>
 		    </div>
 		    <div class="ls-modal-body">
 			  <fieldset>
                 <label class="ls-label col-md-4 col-xs-12"> 
-                   <b class="ls-label-text">CÛdigo</b>
+                   <b class="ls-label-text">C√≥digo</b>
                    <input type="text"name="idfornecedor" id="idfornecedor" class="ls-field" readonly="readonly">
                 </label>			  
 			    <label class="ls-label col-md-4 col-xs-12">
-				   <b class="ls-label-text">CNJP</b>
-				   <input type="text" name="cnpj" id="cnpj" class="ls-mask-cnjp" placeholder="000.000.000-00" >
+				   <b class="ls-label-text">CNJP (Somente n√∫meros)</b>
+				   <input type="text" name="cnpj" id="cnpjEdit" class="ls-mask-cnjp" onfocusout="validaCampoCnpj(this, true)" placeholder="00000000000000" maxlength="14">
 			    </label>
 			    <label class="ls-label col-md-4 col-xs-12">
 			      <b class="ls-label-text">Nome Fantasia</b>
@@ -182,7 +182,7 @@
 			  </fieldset>		      
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
-		      <button type="submit" class="ls-btn-primary">Salvar</button>
+		      <button type="submit" id="editarFornecedor" class="ls-btn-primary">Salvar</button>
 		      <button class="ls-btn-danger" data-dismiss="modal">Cancelar</button>
 		    </div>
 		  </div>
@@ -203,14 +203,48 @@
     <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> -->
     <script src="javascripts/libs/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="javascripts/locastyle.js" type="text/javascript"></script>
+    <script src="javascripts/bbnloading.js" type="text/javascript"></script>
 	<script>
-        $(function () { 
+
+    $.date = function(dateObject) {
+        var d = new Date(dateObject);
+        var dia = d.getDate();
+        var mes = d.getMonth() + 1;
+        var ano = d.getFullYear();
+        if (dia < 10) {
+            dia = "0" + dia;
+        }
+        if (mes < 10) {
+            mes = "0" + mes;
+        }
+        var date = dia + "/" + mes + "/" + ano;
+        return date;
+    };
+	
+    $(document).ready(function() {
         	$.ajax({
         		url:'http://localhost:8080/app/fornecedor',
         		method:'GET',
         		cache:false,
         		data:{metodo:'listar'},
+        		beforeSend: function(){
+        			
+        			//cria o loader
+        			BbnLoading.createSpin();
+        		},
         		success: function(dados){
+        			
+        			//mata o loader no callback de sucesso da requisi√ß√£o ajax
+        			BbnLoading.removeModalDiv();
+        			
+        			if(dados.length <= 0){
+        				//manipula√ß√£o do dom para 
+        				var node = document.createElement("p");
+        				var textnode = document.createTextNode("N√£o h√° dados para serem listados");
+        				node.appendChild(textnode); 
+        				document.getElementById('containerTbl').appendChild(node);
+        			}
+        			else
         			for(i in dados){
         				//console.log(dados);
         				var id = dados[i].idfornecedor;
@@ -219,7 +253,7 @@
         			    cols += '<td>'+dados[i].idfornecedor+'</td>';
         			    cols += '<td>'+dados[i].cnpj+'</td>';
         			    cols += '<td>'+dados[i].nome+'</td>';
-        			    cols += '<td>'+dados[i].data_cadastro+'</td>';
+        			    cols += '<td>'+$.date(dados[i].data_cadastro)+'</td>';
         			    cols += '<td>';
         			    cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';
         			    cols += '<a href="#" onclick="apagarRegistro('+id+')" class="ls-btn-primary-danger ls-btn-sm">Excluir</a>';
@@ -231,7 +265,7 @@
         		} 
         	});
         });
-        // funÁ„o cadastrar
+        // fun√ß√£o cadastrar
     	$("#cfornecedor").submit(function(e) {
     	    var url = "http://localhost:8080/app/fornecedor?metodo=cadastrar";
     	    $.ajax({
@@ -248,7 +282,7 @@
     			});
     	    e.preventDefault();
     	});
-        // funÁ„o excluir
+        // fun√ß√£o excluir
 		function apagarRegistro(id) {
         	var url = 'http://localhost:8080/app/fornecedor';
         	$.ajax ({
@@ -262,7 +296,7 @@
 		        	}
         	});
         }
-        // funÁ„o editar
+        // fun√ß√£o editar
 		function editarRegistro(id) {
         	var url = 'http://localhost:8080/app/fornecedor';
         	//locastyle.modal.open("#modalEdita");
@@ -273,14 +307,14 @@
 		        		for(i in data){
 		        			$("#idfornecedor").val(data[i].idfornecedor)
 		        			$("#nome").val(data[i].nome)
-		        			$("#cnpj").val(data[i].cnpj)
-		        			$("ativo").val(data[i].ativo)
+		        			$("#cnpjEdit").val(data[i].cnpj);
+		        			$("#ativo").val(data[i].ativo)
 		        		}
 		        }
         	});
         	locastyle.modal.open("#modalEdita");
           }
-         // funÁ„o atualizar
+         // fun√ß√£o atualizar
     	$("#editarfornecedor").submit(function(e) {
     	    var url = "http://localhost:8080/app/fornecedor?metodo=atualiza";
     	    $.ajax({
@@ -294,6 +328,71 @@
     			});
     	    e.preventDefault();
     	});
+        
+        function validaCampoCnpj(element, isEdit){
+        	if(!validarCNPJ(element.value)){
+        		element.className = 'invalidIdMovimento';
+        		if(!isEdit) $("#salvarFornecedor").addClass('ls-disabled');
+        		else $("#editarFornecedor").addClass('ls-disabled');
+        	}else{
+        		element.className = '';
+        		if(!isEdit) $("#salvarFornecedor").removeClass('ls-disabled');
+        		else $("#editarFornecedor").removeClass('ls-disabled');
+        	}
+        }
+    	function validarCNPJ(cnpj) {
+   		 
+    	    cnpj = cnpj.replace(/[^\d]+/g,'');
+    	 
+    	    if(cnpj == '') return false;
+    	     
+    	    if (cnpj.length != 14)
+    	        return false;
+    	 
+    	    // Elimina CNPJs invalidos conhecidos
+    	    if (cnpj == "00000000000000" || 
+    	        cnpj == "11111111111111" || 
+    	        cnpj == "22222222222222" || 
+    	        cnpj == "33333333333333" || 
+    	        cnpj == "44444444444444" || 
+    	        cnpj == "55555555555555" || 
+    	        cnpj == "66666666666666" || 
+    	        cnpj == "77777777777777" || 
+    	        cnpj == "88888888888888" || 
+    	        cnpj == "99999999999999")
+    	        return false;
+    	         
+    	    // Valida DVs
+    	    tamanho = cnpj.length - 2
+    	    numeros = cnpj.substring(0,tamanho);
+    	    digitos = cnpj.substring(tamanho);
+    	    soma = 0;
+    	    pos = tamanho - 7;
+    	    for (i = tamanho; i >= 1; i--) {
+    	      soma += numeros.charAt(tamanho - i) * pos--;
+    	      if (pos < 2)
+    	            pos = 9;
+    	    }
+    	    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    	    if (resultado != digitos.charAt(0))
+    	        return false;
+    	         
+    	    tamanho = tamanho + 1;
+    	    numeros = cnpj.substring(0,tamanho);
+    	    soma = 0;
+    	    pos = tamanho - 7;
+    	    for (i = tamanho; i >= 1; i--) {
+    	      soma += numeros.charAt(tamanho - i) * pos--;
+    	      if (pos < 2)
+    	            pos = 9;
+    	    }
+    	    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    	    if (resultado != digitos.charAt(1))
+    	          return false;
+    	           
+    	    return true;
+    	    
+    	}
   </script>    
   </body>
 </html>

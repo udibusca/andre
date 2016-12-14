@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import br.com.gfinanceiro.bd.DBUtil;
 import br.com.gfinanceiro.dao.ClienteDao;
 import br.com.gfinanceiro.model.Cliente;
 
@@ -19,6 +20,14 @@ import br.com.gfinanceiro.model.Cliente;
 public class ClienteController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+    }		
+	
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -32,7 +41,7 @@ public class ClienteController extends HttpServlet {
 
 			if (acao.equals("listar")) {
 				try {
-					response.getWriter().append(dao.getAllCliente(10));
+					response.getWriter().append(dao.getAllCliente(DBUtil.LIMIT));
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getMessage() + "}";
 					response.getWriter().print(error);
@@ -52,6 +61,10 @@ public class ClienteController extends HttpServlet {
 				if (request.getParameter("ativo") != null) {
 					String ativo = request.getParameter("ativo");
 					cliente.setAtivo(Integer.parseInt(ativo));
+				}
+				if (request.getParameter("saldo") != null) {
+					String saldo = request.getParameter("saldo");
+					cliente.setSaldo(saldo);
 				}
 				try {
 					dao.addCliente(cliente);
@@ -88,7 +101,6 @@ public class ClienteController extends HttpServlet {
 				if (request.getParameter("idcliente") != null) {
 					int idcliente = Integer.parseInt(request.getParameter("idcliente"));
 					cliente.setIdcliente(idcliente);
-					System.out.println(idcliente);
 				}
 				if (request.getParameter("nome") != null) {
 					String nome = (String) request.getParameter("nome");
@@ -101,6 +113,10 @@ public class ClienteController extends HttpServlet {
 				if (request.getParameter("ativo") != null) {
 					String ativo = request.getParameter("ativo");
 					cliente.setAtivo(Integer.parseInt(ativo));
+				}
+				if (request.getParameter("saldo") != null) {
+					String saldo = request.getParameter("saldo");
+					cliente.setSaldo(saldo);
 				}
 				try {
 					dao.updateCliente(cliente);

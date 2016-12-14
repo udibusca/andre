@@ -6,6 +6,14 @@ public class Cliente  {
 	private String cpf;
 	private int ativo;
 	private String data_cadastro;
+	private String saldo;
+	
+	public String getSaldo() {
+		return saldo;
+	}
+	public void setSaldo(String saldo) {
+		this.saldo = saldo;
+	}
 	public int getIdcliente() {
 		return idcliente;
 	}
@@ -39,7 +47,7 @@ public class Cliente  {
 	@Override
 	public String toString() {
 		return "Cliente [idcliente=" + idcliente + ", nome=" + nome + ", cpf=" + cpf + ", ativo=" + ativo
-				+ ", data_cadastro=" + data_cadastro + "]";
+				+ ", saldo=" + saldo +", data_cadastro=" + data_cadastro + "]";
 	}
 	
 	

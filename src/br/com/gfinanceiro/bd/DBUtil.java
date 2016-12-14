@@ -11,6 +11,8 @@ import java.util.Properties;
 public class DBUtil {
 
 	private static Connection connection = null;
+	
+	public static int LIMIT = 100;
 
 	public static Connection getConnection() {
 		if (connection != null)

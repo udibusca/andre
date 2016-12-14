@@ -7,33 +7,46 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
-
-import br.com.gfinanceiro.dao.UsuarioDao;
-import br.com.gfinanceiro.model.Usuario;
+import br.com.gfinanceiro.dao.LoginDao;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
-		UsuarioDao dao = new UsuarioDao();
+		String error;
+		String email = request.getParameter("email");
+		String senha = request.getParameter("senha");
+		HttpSession session = request.getSession();
+		LoginDao dao = new LoginDao();
 
-		if (request.getParameter("metodo") != null) {
-			String acao = (String) request.getParameter("metodo");
-			Gson gson = new Gson();
-			response.setContentType("application/json");
+		String nomeUsuario = dao.verificaUsuario(email, senha);
+
+		if (nomeUsuario == null) {
+			error = "Email ou senha inválidos";
+			session.setAttribute("error", error);
+			response.sendRedirect("login.jsp");
+		} else {
+			session.setAttribute("usuario", nomeUsuario);
+			response.sendRedirect("index.jsp");
 			
-           if (acao.equals("entrar")) {
-				if (request.getParameter("idusuario") != null) {
-					int idusuario = Integer.parseInt(request.getParameter("idusuario"));
-					response.getWriter().append(dao.getUsuarioPorId(idusuario));
-				}
-				
-			}
+
+		}
+
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		if ("logout".equalsIgnoreCase(request.getParameter("param"))) {
+			HttpSession session = request.getSession();
+			session.removeAttribute("usuario");
+			session.invalidate();
+			response.sendRedirect("login.jsp");
 		}
 	}
 

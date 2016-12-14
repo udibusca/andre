@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import br.com.gfinanceiro.bd.DBUtil;
 import br.com.gfinanceiro.dao.CategoriaDao;
 import br.com.gfinanceiro.model.Categoria;
 
@@ -19,9 +20,15 @@ import br.com.gfinanceiro.model.Categoria;
 public class CategoriaController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+    }	
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		CategoriaDao dao = new CategoriaDao();
 
 		if (request.getParameter("metodo") != null) {
@@ -32,7 +39,7 @@ public class CategoriaController extends HttpServlet {
 
 			if (acao.equals("listar")) {
 				try {
-					response.getWriter().append(dao.getAllCategoria(10));
+					response.getWriter().append(dao.getAllCategoria(DBUtil.LIMIT));
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getMessage() + "}";
 					response.getWriter().print(error);

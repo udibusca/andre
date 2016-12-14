@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import br.com.gfinanceiro.bd.DBUtil;
 import br.com.gfinanceiro.dao.UsuarioDao;
 import br.com.gfinanceiro.model.Usuario;
 
@@ -29,7 +30,7 @@ public class UsuarioController extends HttpServlet {
 
 			if (acao.equals("listar")) {
 				try {
-					response.getWriter().append(dao.getAllUsuario(10));
+					response.getWriter().append(dao.getAllUsuario(DBUtil.LIMIT));
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getMessage() + "}";
 					response.getWriter().print(error);

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import br.com.gfinanceiro.bd.DBUtil;
 import br.com.gfinanceiro.dao.FornecedorDao;
 import br.com.gfinanceiro.model.Fornecedor;
 
@@ -32,7 +33,7 @@ public class FornecedorController extends HttpServlet {
 
 			if (acao.equals("listar")) {
 				try {
-					response.getWriter().append(dao.getAllFornecedor(10));
+					response.getWriter().append(dao.getAllFornecedor(DBUtil.LIMIT));
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getMessage() + "}";
 					response.getWriter().print(error);

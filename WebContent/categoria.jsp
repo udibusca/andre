@@ -1,53 +1,64 @@
 <%@page import="org.apache.jasper.tagplugins.jstl.core.ForEach"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
     <title>Cadastro de Categoria | G.Financeiro</title>
 
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="description" content="Sistema financeiro">
     <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css">
+    <link href="javascripts/bbnloading.css" rel="stylesheet" type="text/css">
     <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
     <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
     
   </head>
   <body>
     <div class="ls-topbar ">
+		<div class="ls-notification-topbar">
+			<!-- Links de apoio -->
+			<div class="ls-alerts-list">
+				<a href="#" class="ls-ico-question" data-ls-module="topbarCurtain"
+					data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
+			</div>
+			<%
+				String usuario = (String) session.getAttribute("usuario");
+				if (usuario != null) {
+			%>
+			<!-- Dropdown com detalhes da conta de usu√°rio -->
+			<div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
+				<a href="#" class="ls-ico-user"> <span class="ls-name">
+						<% out.print(usuario);	%>
+				</span>
+				</a>
 
-  <!-- Barra de NotificaÁıes -->
-  <div class="ls-notification-topbar">
+				<nav class="ls-dropdown-nav ls-user-menu">
+					<ul>
+						<li><a href="login?param=logout">Sair</a></li>
+						<%
+							} else {
+								String direcionaURL = "404.jsp";
+								response.sendRedirect(direcionaURL);
+						%>
 
-    <!-- Links de apoio -->
-    <div class="ls-alerts-list">
-      <a href="#" class="ls-ico-question" data-ls-module="topbarCurtain" data-target="#ls-feedback-curtain"><span>Ajuda</span></a>
-    </div>
-
-    <!-- Dropdown com detalhes da conta de usu·rio -->
-    <div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
-      <a href="#" class="ls-ico-user">
-        <span class="ls-name">Admim</span>
-        (Usuario)
-      </a>
-
-      <nav class="ls-dropdown-nav ls-user-menu">
-        <ul>
-          <li><a href="#">Sair</a></li>
-         </ul>
-      </nav>
-    </div>
-  </div>
+						<h3>Voc√™ n√£o tem acesso para acessar est√° p√°gina</h3>
+						<%
+							}
+						%>
+					</ul>
+				</nav>
+			</div>
+		</div>
 
   <span class="ls-show-sidebar ls-ico-menu"></span>
 
-  <a href="#"  class="ls-go-next"><span class="ls-text">Voltar</span></a>
+  <a href="javascript:history.back()"  class="ls-go-next"><span class="ls-text">Voltar</span></a>
 
   <!-- Nome do produto/marca com sidebar -->
     <h1 class="ls-brand-name">
-      <a href="home" class="ls-ico-earth">
+      <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
         G.Financeiro
       </a>
@@ -66,14 +77,14 @@
         <ul>
            <li><a href="index.jsp" class="ls-ico-dashboard" title="Dashboard">Dashboard</a></li>
            <li><a href="movimentos.jsp" class="ls-ico-trophy" title="Movimentos">Movimentos</a></li>
-           <li><a href="#" class="ls-ico-stats" title="RelatÛrios da revenda">RelatÛrio mensal</a></li>
+      <!-- <li><a href="relatorioMensal.jsp" class="ls-ico-stats" title="Relat√≥rios da revenda">Relat√≥rio mensal</a></li>-->
            <li>
-            <a href="#" class="ls-ico-cog" title="ConfiguraÁıes">Cadastros</a>
+            <a href="#" class="ls-ico-cog" title="Configura√ß√µes">Cadastros</a>
             <ul>
               <li><a href="cliente.jsp">Cliente</a></li>
               <li><a href="fornecedor.jsp">Fornecedor</a></li>
               <li><a href="categoria.jsp">Categoria</a></li>
-              <li><a href="usuario.jsp">Usu·rio</a></li>
+              <li><a href="usuario.jsp">Usu√°rio</a></li>
             </ul>
           </li>
         </ul>
@@ -86,9 +97,9 @@
     <main class="ls-main ">
 	<div class="container-fluid">
 		<h1 class="ls-title-intro ls-ico-text2">Categoria</h1>
-		<!-- Migalhas de p„o -->
+		<!-- Migalhas de p√£o -->
 		<ol class="ls-breadcrumb">
-			<li><a href="index.jsp">InÌcio</a></li>
+			<li><a href="index.jsp">In√≠cio</a></li>
 			<li>Categoria</li>
 		</ol><br>
 		
@@ -96,30 +107,20 @@
 		   <button data-ls-module="modal" data-target="#myAwesomeModal" class="ls-btn-primary"> <span class="ls-ico-plus"> </span> Cadastrar nova Categoria</button>
 		</div>
 		<!-- Grid de registros -->
-	<table class="ls-table ls-table-striped">
-	  <thead>
-	    <tr>
-	      <th>DescriÁ„o</th>
-	      <th>Dta Cadastro</th>
-	      <th></th>
-	      <th></th>
-	    </tr>
-	  </thead>
-	  <tbody id="tabela">
-	  </tbody>
-	</table>
-	<!-- PaginaÁ„o da tabela -->
-	<div class="ls-pagination-filter">
-	  <ul class="ls-pagination">
-	    <li class="ls-disabled"><a href="#">&laquo; Anterior</a></li>
-	    <li><a href="#">1</a></li>
-	    <li><a href="#">2</a></li>
-	    <li class="ls-active"><a href="#">3</a></li>
-	    <li><a href="#">4</a></li>
-	    <li><a href="#">5</a></li>
-	    <li><a href="#">PrÛximo &raquo;</a></li>
-	  </ul>
-	</div>	
+		<div id="containerTbl">
+			<table class="ls-table ls-table-striped">
+			  <thead>
+			    <tr>
+			      <th>Descri√ß√£o</th>
+			      <th>Dta Cadastro</th>
+			      <th></th>
+			      <th></th>
+			    </tr>
+			  </thead>
+			  <tbody id="tabela">
+			  </tbody>
+			</table>
+		</div>
 	</div>
 
 		<!-- Modal de cadastro categoria -->
@@ -134,7 +135,7 @@
 			  <fieldset>
 			    <label class="ls-label col-md-4 col-xs-12">
 				   <b class="ls-label-text">Nome da Categoria</b>
-				   <input type="text" name="nome" placeholder="DescriÁ„o da despesa" class="ls-field" required>
+				   <input type="text" name="nome" placeholder="Descri√ß√£o da despesa" class="ls-field" required>
 			    </label>
 			  </fieldset>
 			  <input type="hidden" name="ativo" id="ativo" value="1"> <!-- Passa o usuario sempre ativo no cadastro -->
@@ -160,12 +161,12 @@
 		    <div class="ls-modal-body">
 			  <fieldset>
 			    <label class="ls-label col-md-4 col-xs-12">
-				   <b class="ls-label-text">CÛdigo</b>
+				   <b class="ls-label-text">C√≥digo</b>
 				   <input type="text" name="idcategoria" id="idcategoria" class="ls-field" readonly="readonly">
 			    </label>			  
 			    <label class="ls-label col-md-4 col-xs-12">
 				   <b class="ls-label-text">Nome da Categoria</b>
-				   <input type="text" id="nome" name="nome" placeholder="DescriÁ„o da despesa" class="ls-field" required>
+				   <input type="text" id="nome" name="nome" placeholder="Descri√ß√£o da despesa" class="ls-field" required>
 			    </label>
 			  </fieldset>
               <input type="hidden" name="ativo" id="ativo" value="1">
@@ -191,22 +192,56 @@
     <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js"></script> -->
     <script src="javascripts/libs/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="javascripts/locastyle.js" type="text/javascript"></script>
+    <script src="javascripts/bbnloading.js" type="text/javascript"></script>
     <script>
+    
+    $.date = function(dateObject) {
+        var d = new Date(dateObject);
+        var dia = d.getDate();
+        var mes = d.getMonth() + 1;
+        var ano = d.getFullYear();
+        if (dia < 10) {
+            dia = "0" + dia;
+        }
+        if (mes < 10) {
+            mes = "0" + mes;
+        }
+        var date = dia + "/" + mes + "/" + ano;
+        return date;
+    };
+    
+    
     $(document).ready(function(){
  	 $.ajax({
 		url:'http://localhost:8080/app/categoria',
 		method:'GET',
 		cache:false,
 		data:{metodo:'listar'},
+		beforeSend: function(){
+			
+			//cria o loader
+			BbnLoading.createSpin();
+		},
 		success: function(data){
-			//data = JSON.parse(data);
+			
+			//mata o loader no callback de sucesso da requisi√ß√£o ajax
+			BbnLoading.removeModalDiv();
+			
+			if(data.length <= 0){
+				//manipula√ß√£o do dom para 
+				var node = document.createElement("p");
+				var textnode = document.createTextNode("N√£o h√° dados para serem listados");
+				node.appendChild(textnode); 
+				document.getElementById('containerTbl').appendChild(node);
+			}
+			else
 			for(i in data){
 				var id = data[i].idcategoria;
 				var newRow = $("<tr>");
 			    var cols = "";
 
 			    cols += '<td>'+data[i].nome+'</td>';
-			    cols += '<td>'+data[i].dtaCadastro+'</td>';
+			    cols += '<td>'+$.date(data[i].dtaCadastro)+'</td>';
 			    cols += '<td></td>';
 			    cols += '<td>';
 			    cols += '<a href="#" onclick="editarRegistro('+id+')" class="ls-btn-sm">Editar</a>';
@@ -219,7 +254,7 @@
 		}
 	 });
     });
-    // funÁ„o cadastrar
+    // fun√ß√£o cadastrar
 	$("#ccat").submit(function(e) {
 	    var url = "http://localhost:8080/app/categoria?metodo=cadastrar";
 	    $.ajax({
@@ -236,7 +271,7 @@
 			});
 	    e.preventDefault();
 	});
-    // funÁ„o excluir
+    // fun√ß√£o excluir
 	function apagarRegistro(id) {
     	var url = 'http://localhost:8080/app/categoria';
     	$.ajax ({
@@ -250,7 +285,7 @@
         	}
 	    });
     }
-    // funÁ„o editar
+    // fun√ß√£o editar
 	function editarRegistro(id) {
     	var url = 'http://localhost:8080/app/categoria';
     	$.ajax ({
@@ -258,16 +293,15 @@
 	        type:'GET',
 	        success:function(data){ 
 	        		for(i in data){
-	        			$("#idcategoria").val(data[i].idcategoria)
-	        			$("#nome").val(data[i].nome)
-	        			$("#ativo").val(data[i].ativo) 
-	        			console.log(data);	
+	        			$("#idcategoria").val(data[i].idcategoria);
+	        			$("#nome").val(data[i].nome);
+	        			$("#ativo").val(data[i].ativo);
 	        		}
 	        }
     	});
     	locastyle.modal.open("#modalEdita");
       }
-    // funÁ„o atualizar
+    // fun√ß√£o atualizar
 	$("#ccategoriaedita").submit(function(e) {
 	    var url = "http://localhost:8080/app/categoria?metodo=atualiza";
 	    $.ajax({
@@ -292,7 +326,7 @@
       <p>Deseja remover essa categoria?</p>
     </div>
     <div class="ls-modal-footer">
-      <button class="ls-btn ls-float-right" data-dismiss="ls-dismissable">N„o</button>
+      <button class="ls-btn ls-float-right" data-dismiss="ls-dismissable">N√£o</button>
       <button id="confirma" type="submit" class="ls-btn-primary">Sim</button>
     </div>
   </div>

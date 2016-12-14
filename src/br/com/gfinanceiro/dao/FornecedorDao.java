@@ -31,6 +31,16 @@ public class FornecedorDao {
 		String sql = "select * from fornecedor where idfornecedor="+idfornecedor;
 		return obj.getFornecedorPorId(sql);
 	}
+	
+	/*
+	 * get fornecedor por cnpj
+	 * 
+	 * */
+	public String getFornecedorPorCnpj(String cnpj) {
+		FornecedorDao obj = new FornecedorDao();
+		String sql = "select * from fornecedor where cnpj="+cnpj;
+		return obj.getFornecedorPorId(sql);
+	}
 
 	// CRUD - addFornecedor / deleteFornecedor / updateFornecedor / getFornecedorById
 	public void addFornecedor(Fornecedor fornecedor) {

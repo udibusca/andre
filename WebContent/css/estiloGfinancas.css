@@ -20404,3 +20404,7 @@ a[class*="ls-tag-"]:hover {
 		top: 5px
 	}
 }
+.invalidIdMovimento{
+	border:1px solid red!important;
+	color:red!important;
+}
