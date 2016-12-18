@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
 <head>
-<title>Cadastro de Usuário | G.Financeiro</title>
+<title>Cadastro de Usuário | i9 Finanças</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -70,7 +70,7 @@
 		<!-- Nome do produto/marca com sidebar -->
 		<h1 class="ls-brand-name">
 			<a href="index.jsp" class="ls-ico-earth">
-			<small>Modulo financeiro</small> G.Financeiro
+			<small>Modulo financeiro</small> i9 Finanças
 			</a>
 		</h1>
 		<!-- Nome do produto/marca sem sidebar quando for o pre-painel  -->

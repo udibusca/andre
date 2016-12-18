@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
 <head>
-<title>Cadastro de Clientes | G.Financeiro</title>
+<title>Cadastro de Clientes | i9 Finanças</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -64,7 +64,7 @@
 		<!-- Nome do produto/marca com sidebar -->
 		<h1 class="ls-brand-name">
 		<a href="index.jsp" class="ls-ico-earth">
-		   <small>Modulo financeiro</small> G.Financeiro
+		   <small>Modulo financeiro</small> i9 Finanças
 			</a>
 		</h1>
 
@@ -185,11 +185,7 @@
 							<input type="text" name="idcliente" id="idcliente" class="ls-field" readonly="readonly">
 						</label>
 						<label class="ls-label col-md-4 col-xs-12"> <b
-							class="ls-label-text">CPF (Somente números)</b><input type="text" name="cpf" id="cpf" 
-							onfocusout="validaCampoCpf(this, true)" 
-							class="ls-mask-cpf" placeholder="00000000000"
-							data-ls-module="charCounter" 
-			      maxlength="50">
+							class="ls-label-text">CPF (Somente números)</b> <input type="text" name="cpf" id="cpf" onfocusout="validaCampoCpf(this, true)" class="ls-mask-cpf" placeholder="00000000000">
 						</label> 
 						<label class="ls-label col-md-4 col-xs-12"> <b
 							class="ls-label-text">Nome</b> <input type="text" name="nome" id="nome"

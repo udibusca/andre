@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
 <head>
-<title>Movimentos | G.Financeiro</title>
+<title>Movimentos | i9 Finanças</title>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -38,7 +38,7 @@
     <h1 class="ls-brand-name">
       <a href="home" class="ls-ico-earth">
         <small>Modulo financeiro</small>
-        G.Financeiro
+        i9 Finanças
       </a>
     </h1>
 	</div>
@@ -79,7 +79,7 @@
 			<div class="set-ip">
 				<strong>IP:</strong> <% out.print(request.getRemoteAddr() ); %>
 			</div>
-			<p class="ls-copy-right">Copyright © 2016-2016 G.Financeiro.</p>
+			<p class="ls-copy-right">Copyright © 2016-2016 i9 Finanças.</p>
 		</div>
 	</footer>
 </main>

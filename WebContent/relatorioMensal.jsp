@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
-    <title>Dashboard | G.Financeiro</title>
+    <title>Dashboard | i9 Finanças</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -56,7 +56,7 @@
     <h1 class="ls-brand-name">
       <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
-        G.Financeiro
+        i9 Finanças
       </a>
     </h1>
   <!-- Nome do produto/marca sem sidebar quando for o pre-painel  -->

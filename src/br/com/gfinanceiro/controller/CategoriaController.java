@@ -111,7 +111,7 @@ public class CategoriaController extends HttpServlet {
 				} catch (Exception ex) {
 					String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getStackTrace().toString() + "}";
 					response.getWriter().print(error);
-				}
+				}	
 			}
 		}
 	}

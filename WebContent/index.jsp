@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
-    <title>Dashboard | G.Financeiro</title>
+    <title>Dashboard | i9 Finanças</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -51,7 +51,7 @@
     <h1 class="ls-brand-name">
       <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
-        G.Financeiro
+        i9 Finanças
       </a>
     </h1>
 </div>
@@ -334,11 +334,15 @@
     				  }
     				}
     				
+    				var gambiarra = 0;
     				for(i in groupedData){
+    					gambiarra++;
     					for(j in groupedData[i]){
     						var thatTotal = groupedData[i][j].valor;
     					}
-    					dataset.push({ label: i, data: [[j, thatTotal]]});
+    					dataset.push({ label: i, data: [[gambiarra, thatTotal]]});
+    							
+    					
     				}
     				
     		    	$.plot($("#gpc"), dataset, configAdc);

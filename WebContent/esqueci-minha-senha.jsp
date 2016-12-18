@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Esqueci minha senha | G.Financeiro</title>
+<title>Esqueci minha senha | i9 Finanças</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
 <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css" />
@@ -17,7 +17,7 @@
 			<div class="ls-login-container">
 				<div class="ls-login-box">
 					<h1 class="ls-login-logo">
-						<img title="Logo login" src="images/login-logo.png" width="100px"; height="100px"/>
+						<img title="Logo login" src="images/logo.jpg" width="100px"; height="100px"/>
 					</h1>
 					<form role="form" class="ls-form ls-login-form" action="#">
 						<fieldset>

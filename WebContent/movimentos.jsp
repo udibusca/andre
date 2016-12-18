@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
   <head>
-    <title>Movimentos | G.Financeiro</title>
+    <title>Movimentos | i9 Finanças</title>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
@@ -12,22 +12,6 @@
     <link href="javascripts/bbnloading.css" rel="stylesheet" type="text/css">
     <link rel="icon" sizes="192x192" href="images/ico-boilerplate.png">
     <link rel="apple-touch-icon" href="images/ico-boilerplate.png">
-	<script>
-	function id(el){
-	  return document.getElementById(el);
-	}
-	window.onload = function(){
-	  id('valorCompra').onkeyup = function() {
-	      var v = this.value;
-	      v = v.replace(/[^\d,.]/, '');
-	      this.value = v;
-	  };
-	  id('valorCompra').onblur = function() {
-	    var v = this.value;
-	    this.value = _format(v);
-	  }
-	};
-	</script>    
 </head>
   <body>
     <div class="ls-topbar ">
@@ -43,7 +27,13 @@
 			%>
 			<!-- Dropdown com detalhes da conta de usuário -->
 			<div data-ls-module="dropdown" class="ls-dropdown ls-user-account">
-				<a href="#" class="ls-ico-user"> <span class="ls-name"> <% out.print(usuario); %> </span></a>
+				<a href="#" class="ls-ico-user"> <span class="ls-name">
+						<%
+							out.print(usuario);
+						%>
+				</span>
+				</a>
+
 				<nav class="ls-dropdown-nav ls-user-menu">
 					<ul>
 						<li><a href="login?param=logout">Sair</a></li>
@@ -67,7 +57,7 @@
     <h1 class="ls-brand-name">
       <a href="index.jsp" class="ls-ico-earth">
         <small>Modulo financeiro</small>
-        G.Financeiro
+        i9 Finanças
       </a>
     </h1>
   <!-- Nome do produto/marca sem sidebar quando for o pre-painel  -->
@@ -125,6 +115,7 @@
 		        </select>
 		      </div>
 		    </label>
+		
 		    <label class="ls-label col-lg-2 col-md-3 col-sm-12">
 		      <div class="ls-prefix-group">
 		        <span data-target="#ls-popover-0" id="new_feature_custom_filter_2" data-ls-module="popover" data-content="Escolha o período desejado e clique em 'Filtrar'."></span>
@@ -216,11 +207,9 @@
 				      	<b class="ls-label-text">Valor do produto</b>
 				      	<div class="ls-prefix-group">
   			  			<span class="ls-label-text-prefix">R$</span>
-				      	<input type="text" name="valorCompra"  
+				      	<input type="text" name="valorCompra" id="valorCompra"
 				      	onfocusout="Movimentos.onlyNumbers(this); Movimentos.verificarUsoSaldo(this.value)" 
-				      	placeholder="Valor do produto ou serviço Exemplo: 500,39" 
-				      	class="ls-field col-md-6" 
-				      	onfocusout="Movimentos.verificarUsoSaldo()" required>
+				      	placeholder="Valor do produto ou serviço Exe : 500,00" class="ls-field col-md-6" onfocusout="Movimentos.verificarUsoSaldo()" required>
 				      	</div>
 			      	</label>
 			      	<label class="ls-label col-md-6 col-xs-12">
@@ -238,9 +227,9 @@
 			    </label>			    
 			    <label class="ls-label col-md-12 col-xs-12">
 			      <b class="ls-label-text">Descrição</b>
-			      <textarea type="" name="dsc" placeholder="" class="ls-field" data-ls-module="charCounter" 
-			      maxlength="100" required></textarea>
+			      <textarea type="" name="dsc" placeholder="" class="ls-field" data-ls-module="charCounter" maxlength="100" required></textarea>
 			    </label>
+
 			  </fieldset>		      
 		    </div>
 		    <div class="ls-modal-footer ls-txt-right ls-actions-btn">
@@ -313,9 +302,9 @@
     <script src="javascripts/libs/jquery-2.1.0.min.js" type="text/javascript"></script>
     <script src="javascripts/locastyle.js" type="text/javascript"></script>
     <script src="javascripts/bbnloading.js" type="text/javascript"></script>
-
-    <script>    
-    var Movimentos = {};
+    <script src="javascripts/libs/jquery.mask.js" type="text/javascript"></script>
+    <script>
+    	var Movimentos = {};
     	//cpf-cnpj
     	Movimentos.buscaIdcliente_fornecedor = function(cpf_cnpj){
     		$.ajax({
@@ -383,7 +372,7 @@
 			  	'  	<b class="ls-label-text">Valor do produto</b>'+
 			  	'  	<div class="ls-prefix-group">'+
 			  	'	<span class="ls-label-text-prefix">R$</span>'+
-			  	'  	<input type="text" name="valorCompra" id="valorCompra" onfocusout="Movimentos.onlyNumbers(this); Movimentos.verificarUsoSaldo(this.value);" placeholder="Valor do produto ou serviço" class="ls-field col-md-6" onfocusout="Movimentos.verificarUsoSaldo()" required>'+
+			  	'  	<input type="text" name="valorCompra" id="valorCompra" onfocusout="Movimentos.onlyNumbers(this); Movimentos.verificarUsoSaldo(this.value);" placeholder="Valor do produto ou serviço Exe : 500,00" class="ls-field col-md-6" onfocusout="Movimentos.verificarUsoSaldo()" required>'+
 			  	'  	</div>'+
 		      	'</label>'+
 		      	'<label class="ls-label col-md-6 col-xs-12">'+
