@@ -89,7 +89,7 @@ public class ClienteDao {
 			prepare.setString(4, cliente.getSaldo());
 			prepare.setInt(5, cliente.getIdcliente());
 			prepare.executeUpdate();
-			System.err.println(prepare);
+			//System.err.println(prepare);
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
