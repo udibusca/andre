@@ -1,10 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html class="ls-theme-indigo">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Tela de Login | i9 Finanças</title>
+<title>Tela de Login | i9 FinanÃ§as</title>
 <meta name="description" content="" />
 <meta name="keywords" content="" />
 <link href="css/estiloGfinancas.css" rel="stylesheet" type="text/css"/>
@@ -14,8 +15,9 @@
 <body>
 	<div class="ls-login-parent">
 		<div class="ls-login-inner">
-			<div class="ls-login-container">
+			<div class="ls-login-container">			
 				<div class="ls-login-box">
+				   <div class="ls-alert-danger">${erro}</div>
 					<h1 class="ls-login-logo">
 						<img title="Logo login" src="images/logo.jpg" width="100px"; height="100px"/>
 					</h1>

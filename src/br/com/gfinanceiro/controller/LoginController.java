@@ -18,7 +18,7 @@ public class LoginController extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String error;
+		String erro;
 		String email = request.getParameter("email");
 		String senha = request.getParameter("senha");
 		HttpSession session = request.getSession();
@@ -27,8 +27,8 @@ public class LoginController extends HttpServlet {
 		String nomeUsuario = dao.verificaUsuario(email, senha);
 
 		if (nomeUsuario == null) {
-			error = "Email ou senha inválidos";
-			session.setAttribute("error", error);
+			erro = "Email ou senha inválidos";
+			session.setAttribute("erro", erro);
 			response.sendRedirect("login.jsp");
 		} else {
 			session.setAttribute("usuario", nomeUsuario);
