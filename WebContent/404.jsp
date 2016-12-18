@@ -36,7 +36,7 @@
 
   <!-- Nome do produto/marca com sidebar -->
     <h1 class="ls-brand-name">
-      <a href="home" class="ls-ico-earth">
+      <a href="home" class="ls-ico-lamp">
         <small>Modulo financeiro</small>
         i9 Finanças
       </a>
